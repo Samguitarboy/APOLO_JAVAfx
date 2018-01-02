@@ -14,8 +14,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -27,16 +29,18 @@ public class GamepageController {
     private Circle node1, node2, node3;
     @FXML
     private StackPane scene;
-    
-    int score=0;
+    @FXML
+    private Label scoreshow, hit;
+    int score = 0;
 
     public void initialize() {
         Circle circle = new Circle();
         circle.setVisible(true);
+        circle = node1;
         circle.setId("newnode");
         circle.setTranslateY(500);
         circle.setTranslateX(200);
-        
+
         try {
             this.fileclear();
         } catch (IOException ex) {
@@ -77,11 +81,18 @@ public class GamepageController {
                 switch (event.toString().substring(181)) {
                     case " LEFT]":
                         node1.setVisible(false);
-                        if (node1.getTranslateY()<670 && node1.getTranslateY()>630)
-                            score+=100;
-                        else if(node1.getTranslateY()>670 && node1.getTranslateY()<690 ||node1.getTranslateY()<630 && node1.getTranslateY()>610)
-                            score+=50;
-                            
+                        if (node1.getTranslateY() < 670 && node1.getTranslateY() > 630) {
+                            score += 100;
+                            hit.setText("Perfect!!");
+                            hit.setTextFill(Color.BLUE);
+                        } else if (node1.getTranslateY() > 670 && node1.getTranslateY() < 690 || node1.getTranslateY() < 630 && node1.getTranslateY() > 610) {
+                            score += 50;
+                            hit.setText("Great!");
+                            hit.setTextFill(Color.GREEN);
+                        } else {
+                            hit.setText("Fail!");
+                            hit.setTextFill(Color.RED);
+                        }
                          {
                             try {
                                 this.writefile(String.valueOf(node1.getTranslateY()));
@@ -92,11 +103,12 @@ public class GamepageController {
                         break;
                     case " RIGHT]":
                         node3.setVisible(false);
-                        if (node1.getTranslateY()<670 && node1.getTranslateY()>630)
-                            score+=100;
-                        else if(node1.getTranslateY()>670 && node1.getTranslateY()<690 ||node1.getTranslateY()<630 && node1.getTranslateY()>610)
-                            score+=50;
-                            
+                        if (node1.getTranslateY() < 670 && node1.getTranslateY() > 630) {
+                            score += 100;
+                        } else if (node1.getTranslateY() > 670 && node1.getTranslateY() < 690 || node1.getTranslateY() < 630 && node1.getTranslateY() > 610) {
+                            score += 50;
+                        }
+
                          {
                             try {
                                 this.writefile(String.valueOf(node2.getTranslateY()));
@@ -107,11 +119,12 @@ public class GamepageController {
                         break;
                     case " UP]":
                         node2.setVisible(false);
-                        if (node1.getTranslateY()<670 && node1.getTranslateY()>630)
-                            score+=100;
-                        else if(node1.getTranslateY()>670 && node1.getTranslateY()<690 ||node1.getTranslateY()<630 && node1.getTranslateY()>610)
-                            score+=50;
-                            
+                        if (node1.getTranslateY() < 670 && node1.getTranslateY() > 630) {
+                            score += 100;
+                        } else if (node1.getTranslateY() > 670 && node1.getTranslateY() < 690 || node1.getTranslateY() < 630 && node1.getTranslateY() > 610) {
+                            score += 50;
+                        }
+
                         //System.out.println(event.toString().substring(181));
                          {
                             try {
@@ -158,6 +171,7 @@ public class GamepageController {
         try (FileWriter fw = new FileWriter(path, true)) {
             fw.write(pos + " ");
             System.out.println(score);
+            scoreshow.setText(String.valueOf(score));
         }
     }
 }
