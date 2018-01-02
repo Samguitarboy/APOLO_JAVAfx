@@ -58,7 +58,7 @@
             <Insets right="130.0" top="27.0" />
          </StackPane.margin>
       </Button>
-      <Button fx:id="backtomain" mnemonicParsing="false" text="Main" StackPane.alignment="TOP_LEFT">
+      <Button fx:id="backtomain" mnemonicParsing="false" onMouseClicked="#gotoMain" text="Main" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
             <Insets left="121.0" top="35.0" />
          </StackPane.margin>

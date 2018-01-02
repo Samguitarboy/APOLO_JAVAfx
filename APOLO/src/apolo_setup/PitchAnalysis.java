@@ -7,6 +7,7 @@ import be.hogent.tarsos.dsp.pitch.PitchDetectionResult;
 import be.hogent.tarsos.dsp.pitch.PitchProcessor;
 import be.hogent.tarsos.dsp.pitch.PitchProcessor.PitchEstimationAlgorithm;
 import java.io.File;
+import java.util.ArrayList;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -15,8 +16,20 @@ import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
 public class PitchAnalysis {
 
     private double timestamp = 0;
-    private float pitchrecord = 0;
+    private float pitchrecord = -1;
     private int count = 0;
+
+    private ArrayList<Double> showtime = new ArrayList<Double>();
+    private ArrayList<Integer> showornot = new ArrayList<Integer>();
+
+    public ArrayList<Double> getShowtime() {
+        return showtime;
+    }
+
+    public ArrayList<Integer> getShowornot() {
+        return showornot;
+    }
+    
 
     public void getpitch() throws Exception {
         PitchDetectionHandler handler = new PitchDetectionHandler() {
@@ -27,9 +40,14 @@ public class PitchAnalysis {
                 compare(audioEvent.getTimeStamp(), pitchDetectionResult.getPitch());
                 if (count == 12) {
                     System.out.println(timestamp + " " + pitchrecord);
+                    showtime.add(timestamp);
+                    if(pitchrecord==0.0)
+                        showornot.add(0);
+                    else
+                        showornot.add(1);
                     count=0;
                     timestamp = 0;
-                    pitchrecord = 0;
+                    pitchrecord = -1;
                 }
 
             }
@@ -43,8 +61,9 @@ public class PitchAnalysis {
 
     private void compare(double time, float input) {
         if (input == -1) {
+            timestamp = time;
             pitchrecord = 0;
-        } else if (input > pitchrecord) {
+        } else if (input > pitchrecord && pitchrecord!=0) {
             timestamp = time;
             pitchrecord = input;
         }

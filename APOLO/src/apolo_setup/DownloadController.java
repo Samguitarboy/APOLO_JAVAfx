@@ -1,15 +1,7 @@
 package apolo_setup;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,6 +17,7 @@ import javafx.stage.Stage;
 
 public class DownloadController implements Initializable {
 
+    
     @FXML
     private void gotoMain(MouseEvent event) throws Exception {
         Parent main_page_parent = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
@@ -61,6 +54,7 @@ public class DownloadController implements Initializable {
         try {
                 PitchAnalysis pitch = new PitchAnalysis();
                 pitch.getpitch();
+                
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -71,6 +65,8 @@ public class DownloadController implements Initializable {
             engine.load("https://www.convyoutube.com/watch?v=" + temp[1]);
         });
     }
+    
+    
 /*
     private void songtoDB(String title) {
         try {
