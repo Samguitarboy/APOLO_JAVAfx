@@ -1,6 +1,12 @@
 package apolo_setup;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +23,6 @@ import javafx.stage.Stage;
 
 public class DownloadController implements Initializable {
 
-    
     @FXML
     private void gotoMain(MouseEvent event) throws Exception {
         Parent main_page_parent = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
@@ -27,17 +32,14 @@ public class DownloadController implements Initializable {
         app_stage.show();
 
     }
-    private String dloadurl;
+
     private String videoid;
-    private String mp3filepath = "songlist\\1.mp3";
-    private String pcmfilepath = "songlist\\1.pcm";
 
     @FXML
-    private Button backtomain, download;
-
+    private Button download, sql;
 
     @FXML
-    private TextField website, a;
+    private TextField songtitle, a;
 
     @FXML
     private WebView web;
@@ -49,12 +51,11 @@ public class DownloadController implements Initializable {
         // TODO
         engine = web.getEngine();
         engine.load("https://www.youtube.com");
-        website.setText("");
+        songtitle.setText("");
         a.setText("");
         try {
-                PitchAnalysis pitch = new PitchAnalysis();
-                pitch.getpitch();
-                
+            //PitchAnalysis pitch = new PitchAnalysis();
+            //pitch.getpitch();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -62,18 +63,21 @@ public class DownloadController implements Initializable {
         download.setOnAction(e -> {
             String[] temp;
             temp = a.getText().split("youtu.be/");
+            videoid = temp[1];
             engine.load("https://www.convyoutube.com/watch?v=" + temp[1]);
         });
+        sql.setOnAction(e -> {
+            songtoDB(songtitle.getText());
+        }
+        );
     }
-    
-    
-/*
+
     private void songtoDB(String title) {
         try {
             Connection conn = null;
             Statement stmt = null;
             ResultSet rs = null;
-
+            System.out.println(title);
             config con = new config();
             conn = (Connection) DriverManager.getConnection("jdbc:mysql://" + con.getUrlstr() + "/" + con.getDBName() + "?user=" + con.getUserstr() + "&password=" + con.getPw());
             System.out.println(conn);
@@ -81,7 +85,7 @@ public class DownloadController implements Initializable {
             stmt = conn.createStatement();
             System.out.println(videoid);
             /*String insertsong = "insert into Songlist values(N'" + title + "',null,CURRENT_DATE,'" + videoid + "')";
-            stmt.executeUpdate(insertsong);*//*
+            stmt.executeUpdate(insertsong);*/
             String SQL = "select * from Songlist";
             rs = stmt.executeQuery(SQL);
 
@@ -101,7 +105,7 @@ public class DownloadController implements Initializable {
             sqlex.printStackTrace();
         }
     }
-
+    /*
     public static String unicodeToString(String str) {
 
         Pattern pattern = Pattern.compile("(\\\\u(\\p{XDigit}{4}))");
@@ -119,6 +123,5 @@ public class DownloadController implements Initializable {
         }
 
         return str;
-
     }*/
 }
