@@ -59,9 +59,8 @@ public class DownloadController implements Initializable {
         website.setText("");
         a.setText("");
         try {
-            //PCM2Data.pitchdetection("");
-            //ConvertMP32PCM.convertMP32PCM(mp3filepath, pcmfilepath);
-            //ConvertMP32PCM.playMP3(mp3filepath);
+                PitchAnalysis pitch = new PitchAnalysis();
+                pitch.getpitch();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
