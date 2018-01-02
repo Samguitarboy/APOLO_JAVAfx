@@ -74,7 +74,7 @@
             <Insets right="200.0" />
          </StackPane.margin>
       </Line>
-      <Circle fx:id="node1" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="CENTER_LEFT">
+      <Circle fx:id="node1" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="TOP_LEFT">
          <fill>
             <RadialGradient centerX="0.5113636363636364" centerY="0.5" focusAngle="75.96" focusDistance="0.04878048780487809" radius="0.4390243902439024">
                <stops>
@@ -87,7 +87,7 @@
             <Insets left="257.0" />
          </StackPane.margin>
       </Circle>
-      <Circle fx:id="node2" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="CENTER">
+      <Circle fx:id="node2" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="TOP_CENTER">
          <StackPane.margin>
             <Insets bottom="160.0" />
          </StackPane.margin>
@@ -100,7 +100,7 @@
             </RadialGradient>
          </fill>
       </Circle>
-      <Circle fx:id="node3" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="CENTER_RIGHT">
+      <Circle fx:id="node3" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="TOP_RIGHT">
          <fill>
             <RadialGradient centerX="0.5113636363636364" centerY="0.5" focusAngle="75.96" focusDistance="0.04878048780487809" radius="0.4390243902439024">
                <stops>
