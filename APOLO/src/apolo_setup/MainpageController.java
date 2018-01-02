@@ -45,6 +45,16 @@ public class MainpageController implements Initializable {
     }
 
     @FXML
+    private void gotoDownloadPage(MouseEvent event) throws Exception {
+        Parent main_page_parent = FXMLLoader.load(getClass().getResource("download.fxml"));
+        Scene main_page_scene = new Scene(main_page_parent);
+        Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        app_stage.setScene(main_page_scene);
+        app_stage.show();
+
+    }
+
+    @FXML
     private void playmp3(MouseEvent event) throws Exception {
         Playing producer = new Playing();
         Thread t = new Thread(producer);
