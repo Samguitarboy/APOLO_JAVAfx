@@ -14,12 +14,24 @@ import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
 
 public class PitchAnalysis {
 
-    public void getpitch() throws Exception{
+    private double timestamp = 0;
+    private float pitchrecord = 0;
+    private int count = 0;
+
+    public void getpitch() throws Exception {
         PitchDetectionHandler handler = new PitchDetectionHandler() {
             @Override
             public void handlePitch(PitchDetectionResult pitchDetectionResult,
                     AudioEvent audioEvent) {
-                System.out.println(audioEvent.getTimeStamp() + " " + pitchDetectionResult.getPitch());
+                count++;
+                compare(audioEvent.getTimeStamp(), pitchDetectionResult.getPitch());
+                if (count == 12) {
+                    System.out.println(timestamp + " " + pitchrecord);
+                    count=0;
+                    timestamp = 0;
+                    pitchrecord = 0;
+                }
+
             }
         };
         AudioInputStream audioInputStream = getPcmAudioInputStream("songlist\\2.mp3");
@@ -27,6 +39,15 @@ public class PitchAnalysis {
 
         adp.addAudioProcessor(new PitchProcessor(PitchEstimationAlgorithm.YIN, 44100, 2048, handler));
         adp.run();
+    }
+
+    private void compare(double time, float input) {
+        if (input == -1) {
+            pitchrecord = 0;
+        } else if (input > pitchrecord) {
+            timestamp = time;
+            pitchrecord = input;
+        }
     }
 
     private static AudioInputStream getPcmAudioInputStream(String mp3filepath) {
