@@ -10,11 +10,17 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.Event;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 public class GamepageController {
 
@@ -29,7 +35,16 @@ public class GamepageController {
         // TODO
 
     }
+    @FXML
+    private void gotoMain(MouseEvent event) throws Exception {
+        Parent main_page_parent = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
+        Scene main_page_scene = new Scene(main_page_parent);
+        Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        app_stage.setScene(main_page_scene);
+        app_stage.show();
 
+    }
+    
     public void postInit() {
         String Path = System.getProperty("user.dir") + "/src/main/resources/hit.mp3";
         Media hit = new Media(new File(Path).toURI().toString());

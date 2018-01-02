@@ -21,11 +21,11 @@
       </ImageView>
       <VBox layoutX="629.0" layoutY="144.0" prefHeight="418.0" prefWidth="276.0">
          <children>
-            <JFXButton onMouseClicked="#playmp3" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ffff66;" textFill="#031830">
+            <JFXButton onMouseClicked="#gotoPlayingPage" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ffff66;" textFill="#031830">
                <graphic>
                   <HBox prefHeight="48.0" prefWidth="162.0">
                      <children>
-                        <Label onMouseClicked="#gotoPlayingPage" prefHeight="43.0" prefWidth="115.0" text="Start Game">
+                        <Label prefHeight="43.0" prefWidth="115.0" text="Start Game">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
@@ -75,7 +75,7 @@
                   <Insets left="60.0" top="40.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton fx:id="stop1" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ffff66;" textFill="#031830">
+            <JFXButton fx:id="stop1" onMouseClicked="#playmp3" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ffff66;" textFill="#031830">
                <graphic>
                   <HBox prefHeight="48.0" prefWidth="162.0">
                      <children>
@@ -102,11 +102,11 @@
                   <Insets left="60.0" top="40.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton fx:id="stop2" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ccffcc;" textFill="#031830">
+            <JFXButton fx:id="stop2" onMouseClicked="#about" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ccffcc;" textFill="#031830">
                <graphic>
                   <HBox prefHeight="48.0" prefWidth="162.0">
                      <children>
-                        <Label onMouseClicked="#about" prefHeight="43.0" prefWidth="115.0" text="About">
+                        <Label prefHeight="43.0" prefWidth="115.0" text="About">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>

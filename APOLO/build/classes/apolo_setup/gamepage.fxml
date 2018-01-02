@@ -50,7 +50,7 @@
             <Glow />
          </effect>
       </HBox>
-      <Button fx:id="main1" mnemonicParsing="false" text="| |" StackPane.alignment="TOP_RIGHT">
+      <Button fx:id="main1" mnemonicParsing="false" onMouseClicked="#gotoMain" text="| |" StackPane.alignment="TOP_RIGHT">
          <StackPane.margin>
             <Insets right="25.0" top="50.0" />
          </StackPane.margin>
@@ -115,7 +115,7 @@
       </Circle>
       <ImageView fitHeight="110.0" fitWidth="79.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
          <image>
-            <Image url="@../../../left.png" />
+            <Image url="@../images/left.png" />
          </image>
          <StackPane.margin>
             <Insets bottom="50.0" left="262.0" />
@@ -123,7 +123,7 @@
       </ImageView>
       <ImageView fitHeight="110.0" fitWidth="79.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
          <image>
-            <Image url="@../../../up.png" />
+            <Image url="@../images/up.png" />
          </image>
          <StackPane.margin>
             <Insets bottom="50.0" />
@@ -131,7 +131,7 @@
       </ImageView>
       <ImageView fitHeight="110.0" fitWidth="79.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_RIGHT">
          <image>
-            <Image url="@../../../right.png" />
+            <Image url="@../images/right.png" />
          </image>
          <StackPane.margin>
             <Insets bottom="50.0" right="264.0" />
