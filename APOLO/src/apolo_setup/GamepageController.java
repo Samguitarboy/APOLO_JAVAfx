@@ -15,7 +15,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -31,12 +33,19 @@ public class GamepageController {
     private StackPane scene;
     @FXML
     private Label scoreshow, hit;
+
+    @FXML
+    private TitledPane pane;
+
+    @FXML
+    private GridPane song;
     int score = 0;
 
     public void initialize() {
+        songDB();
         Circle circle = new Circle();
         circle.setVisible(true);
-        circle = node1;
+        //circle = node1;
         circle.setId("newnode");
         circle.setTranslateY(500);
         circle.setTranslateX(200);
@@ -151,12 +160,23 @@ public class GamepageController {
 
     }
 
-    public void postInit() {
+    private void songDB() {
+        config con = new config();
+        String connectionStr = "jdbc:mysql://" + con.getUrlstr() + "/" + con.getDBName() + "?user=" + con.getUserstr() + "&password=" + con.getPw();
+        String songnum = "select  count(*) from Songlist";
+        String sqlStr = "select  Song_Title from Songlist";
+        MySQLConnector songnumber = new MySQLConnector(connectionStr, songnum);
+        int count = Integer.valueOf(songnumber.getResult().toString().trim());
+        MySQLConnector list = new MySQLConnector(connectionStr, sqlStr);
 
+        for (int i = 0; i < count; i++) {
+            songlist(list.getResult().toString().split("\n")[i], i);
+        }
+        pane.setContent(song);
     }
 
-    public void dispose() {
-
+    public void songlist(String result, int i) {
+        song.add(new Button(result), 0, i);
     }
 
     public void fileclear() throws IOException {
