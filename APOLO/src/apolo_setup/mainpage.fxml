@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #003366;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="apolo_setup.MainpageController">
@@ -17,21 +19,21 @@
             <Image url="@../images/cover.jpg" />
          </image>
       </ImageView>
-      <VBox layoutX="575.0" layoutY="168.0" prefHeight="432.0" prefWidth="276.0">
+      <VBox layoutX="629.0" layoutY="144.0" prefHeight="418.0" prefWidth="276.0">
          <children>
-            <JFXButton onMouseClicked="#playmp3" prefHeight="58.0" prefWidth="168.0" style="-fx-background-color: #ccffcc;" textFill="#031830">
+            <JFXButton onMouseClicked="#playmp3" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ffff66;" textFill="#031830">
                <graphic>
-                  <HBox prefHeight="43.0" prefWidth="151.0">
+                  <HBox prefHeight="48.0" prefWidth="162.0">
                      <children>
-                        <Label prefHeight="43.0" prefWidth="115.0" text="Start Game">
+                        <Label onMouseClicked="#gotoPlayingPage" prefHeight="43.0" prefWidth="115.0" text="Start Game">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                            <HBox.margin>
-                              <Insets />
+                              <Insets top="2.0" />
                            </HBox.margin>
                         </Label>
-                        <ImageView fitHeight="48.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="48.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/start.png" />
                            </image>
@@ -46,19 +48,19 @@
                   <Insets left="60.0" top="50.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton fx:id="stop" prefHeight="58.0" prefWidth="168.0" style="-fx-background-color: #ccffcc;" textFill="#031830">
+            <JFXButton fx:id="stop" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ccffcc;" textFill="#031830">
                <graphic>
-                  <HBox prefHeight="43.0" prefWidth="151.0">
+                  <HBox prefHeight="48.0" prefWidth="162.0">
                      <children>
                         <Label prefHeight="43.0" prefWidth="115.0" text="Stop">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                            <HBox.margin>
-                              <Insets />
+                              <Insets left="50.0" top="2.0" />
                            </HBox.margin>
                         </Label>
-                        <ImageView fitHeight="48.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="48.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/start.png" />
                            </image>
@@ -70,10 +72,78 @@
                   </HBox>
                </graphic>
                <VBox.margin>
-                  <Insets left="60.0" top="50.0" />
+                  <Insets left="60.0" top="40.0" />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton fx:id="stop1" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ffff66;" textFill="#031830">
+               <graphic>
+                  <HBox prefHeight="48.0" prefWidth="162.0">
+                     <children>
+                        <Label prefHeight="43.0" prefWidth="115.0" text="Credit">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="40.0" top="2.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ImageView fitHeight="48.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/credit_icon.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </graphic>
+               <VBox.margin>
+                  <Insets left="60.0" top="40.0" />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton fx:id="stop2" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ccffcc;" textFill="#031830">
+               <graphic>
+                  <HBox prefHeight="48.0" prefWidth="162.0">
+                     <children>
+                        <Label onMouseClicked="#about" prefHeight="43.0" prefWidth="115.0" text="About">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="50.0" top="2.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ImageView fitHeight="48.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/about.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </graphic>
+               <VBox.margin>
+                  <Insets left="60.0" top="40.0" />
                </VBox.margin>
             </JFXButton>
          </children>
       </VBox>
+      <Label layoutX="675.0" layoutY="61.0" text="APOLO">
+         <font>
+            <Font name="System Bold" size="60.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#fff200" />
+                  <Stop color="#fff600" offset="0.590625" />
+                  <Stop color="#eac900" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Label>
    </children>
 </AnchorPane>
