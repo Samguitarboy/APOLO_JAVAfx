@@ -12,6 +12,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
+import java.text.DecimalFormat;
 
 public class PitchAnalysis {
 
@@ -32,15 +33,16 @@ public class PitchAnalysis {
     
 
     public void getpitch() throws Exception {
+        DecimalFormat df = new DecimalFormat("##.000");
         PitchDetectionHandler handler = new PitchDetectionHandler() {
             @Override
             public void handlePitch(PitchDetectionResult pitchDetectionResult,
                     AudioEvent audioEvent) {
                 count++;
                 compare(audioEvent.getTimeStamp(), pitchDetectionResult.getPitch());
-                if (count == 12) {
-                    System.out.println(timestamp + " " + pitchrecord);
-                    showtime.add(timestamp);
+                if (count == 1) {
+                    System.out.println(Double.parseDouble(df.format(timestamp)) + " " + pitchrecord);
+                    showtime.add(Double.parseDouble(df.format(timestamp)));
                     if(pitchrecord==0.0)
                         showornot.add(0);
                     else

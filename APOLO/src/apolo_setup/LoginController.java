@@ -15,12 +15,7 @@ import javafx.stage.Stage;
 public class LoginController implements Initializable {
 
     @FXML
-    private Label label;
-
-    @FXML
-    private void handleClose(MouseEvent event) {
-        System.exit(0);
-    }
+    private Label error;
 
     @FXML
     private void gotoMain(MouseEvent event) throws Exception {
@@ -29,6 +24,12 @@ public class LoginController implements Initializable {
         Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         app_stage.setScene(main_page_scene);
         app_stage.show();
+
+    }
+
+    @FXML
+    private void duplicateorstart(MouseEvent event) throws Exception {
+
 
     }
 

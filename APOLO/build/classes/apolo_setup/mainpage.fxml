@@ -75,7 +75,7 @@
                   <Insets left="60.0" top="40.0" />
                </VBox.margin>
             </JFXButton>
-            <JFXButton fx:id="stop1" onMouseClicked="#playmp3" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ffff66;" textFill="#031830">
+            <JFXButton fx:id="stop1" prefHeight="58.0" prefWidth="183.0" style="-fx-background-color: #ffff66;" textFill="#031830">
                <graphic>
                   <HBox prefHeight="48.0" prefWidth="162.0">
                      <children>

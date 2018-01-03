@@ -1,14 +1,11 @@
 package apolo_setup;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import static java.lang.Double.compare;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -19,21 +16,20 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import java.text.DecimalFormat;
 
 public class GamepageController {
 
-    @FXML
-    private Button main1;
     @FXML
     private Circle node1, node2, node3;
     @FXML
     private StackPane scene;
     @FXML
     private Label scoreshow, hit;
-
+    @FXML
+    private JFXButton stop;
     @FXML
     private TitledPane pane;
 
@@ -43,114 +39,128 @@ public class GamepageController {
 
     public void initialize() {
         songDB();
-        Circle circle = new Circle();
-        circle.setVisible(true);
-        //circle = node1;
-        circle.setId("newnode");
-        circle.setTranslateY(500);
-        circle.setTranslateX(200);
+        PitchAnalysis pitch = new PitchAnalysis();
+        DecimalFormat df = new DecimalFormat("##.000");
+        Thread t;
+        t = new Thread(new Runnable() {
+            
+            public void run() {
+                try {
+                    pitch.getpitch();
+                    playmp3();
 
-        try {
-            this.fileclear();
-        } catch (IOException ex) {
-            Logger.getLogger(GamepageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Timer timer = new Timer();
-        TimerTask nodemove = new TimerTask() {
-            int count = 0;
-            int temp = 0;
-            int temp2 = 0;
+                    Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(new TimerTask() {
+                        int index = 1;
+                        Double test = 0.0;
 
-            @Override
-            public void run() { // 650 標準點 
-                // TODO Auto-generated method stub   
-                node1.setTranslateY(count);
-                node2.setTranslateY(temp);
-                node3.setTranslateY(temp2);
-                count += 1;
-                temp += 1;
-                temp2 += 1;
-                if (count > 800) {
-                    count = 0;
-                    node1.setVisible(true);
+                        @Override
+                        public void run() {
+                            // TODO Auto-generated method stub
+                            test = test + 0.001;
+                            System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
+                            System.out.println(pitch.getShowtime().get(index));
+                            if (1==compare(Double.parseDouble(df.format(test)) , pitch.getShowtime().get(index))) {
+                                if (pitch.getShowornot().get(index) == 1) {
+                                    System.out.println(pitch.getShowtime().get(index));
+                                    node2.setVisible(true);
+                                    index++;
+                                } else {
+                                    node2.setVisible(false);
+                                    index++;
+                                }
+                            }
+                            if(index==pitch.getShowtime().size())
+                                this.cancel();
+                        }
+                        
+                    }, 0, 1);  
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-                if (temp > 800) {
-                    temp = -420;
-                    node2.setVisible(true);
-                }
-                if (temp2 > 800) {
-                    temp2 = 0;
-                    node3.setVisible(true);
-                }
+
             }
-        };
-        timer.schedule(nodemove, 0, 2);//execute speed 
-        scene.setOnKeyPressed((Event event) -> {
-            if (null != event.toString().substring(181)) {
-                switch (event.toString().substring(181)) {
-                    case " LEFT]":
-                        node1.setVisible(false);
-                        if (node1.getTranslateY() < 670 && node1.getTranslateY() > 630) {
-                            score += 100;
-                            hit.setText("Perfect!!");
-                            hit.setTextFill(Color.BLUE);
-                        } else if (node1.getTranslateY() > 670 && node1.getTranslateY() < 690 || node1.getTranslateY() < 630 && node1.getTranslateY() > 610) {
-                            score += 50;
-                            hit.setText("Great!");
-                            hit.setTextFill(Color.GREEN);
-                        } else {
-                            hit.setText("Fail!");
-                            hit.setTextFill(Color.RED);
-                        }
-                         {
-                            try {
-                                this.writefile(String.valueOf(node1.getTranslateY()));
-                            } catch (IOException ex) {
-                                Logger.getLogger(GamepageController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                        break;
-                    case " RIGHT]":
-                        node3.setVisible(false);
-                        if (node1.getTranslateY() < 670 && node1.getTranslateY() > 630) {
-                            score += 100;
-                        } else if (node1.getTranslateY() > 670 && node1.getTranslateY() < 690 || node1.getTranslateY() < 630 && node1.getTranslateY() > 610) {
-                            score += 50;
-                        }
 
-                         {
-                            try {
-                                this.writefile(String.valueOf(node2.getTranslateY()));
-                            } catch (IOException ex) {
-                                Logger.getLogger(GamepageController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                        break;
-                    case " UP]":
-                        node2.setVisible(false);
-                        if (node1.getTranslateY() < 670 && node1.getTranslateY() > 630) {
-                            score += 100;
-                        } else if (node1.getTranslateY() > 670 && node1.getTranslateY() < 690 || node1.getTranslateY() < 630 && node1.getTranslateY() > 610) {
-                            score += 50;
-                        }
+        });
+        t.start();
 
-                        //System.out.println(event.toString().substring(181));
-                         {
-                            try {
-                                this.writefile(String.valueOf(node3.getTranslateY()));
-                            } catch (IOException ex) {
-                                Logger.getLogger(GamepageController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+        /*scene.setOnKeyPressed((Event event) -> {
+                    if (null != event.toString().substring(181)) {
+                        switch (event.toString().substring(181)) {
+                            case " LEFT]":
+                                node1.setVisible(false);
+                                if (node1.getTranslateY() < 670 && node1.getTranslateY() > 630) {
+                                    score += 100;
+                                    hit.setText("Perfect!!");
+                                    hit.setTextFill(Color.BLUE);
+                                } else if (node1.getTranslateY() > 670 && node1.getTranslateY() < 690 || node1.getTranslateY() < 630 && node1.getTranslateY() > 610) {
+                                    score += 50;
+                                    hit.setText("Great!");
+                                    hit.setTextFill(Color.GREEN);
+                                } else {
+                                    hit.setText("Fail!");
+                                    hit.setTextFill(Color.RED);
+                                }
+                                 {
+                                    try {
+                                        writefile(String.valueOf(node1.getTranslateY()));
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(GamepageController.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                                break;
+                            case " RIGHT]":
+                                node3.setVisible(false);
+                                if (node1.getTranslateY() < 670 && node1.getTranslateY() > 630) {
+                                    score += 100;
+                                } else if (node1.getTranslateY() > 670 && node1.getTranslateY() < 690 || node1.getTranslateY() < 630 && node1.getTranslateY() > 610) {
+                                    score += 50;
+                                }
+
+                                 {
+                                    try {
+                                        writefile(String.valueOf(node2.getTranslateY()));
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(GamepageController.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                                break;
+                            case " UP]":
+                                node2.setVisible(false);
+                                if (node1.getTranslateY() < 670 && node1.getTranslateY() > 630) {
+                                    score += 100;
+                                } else if (node1.getTranslateY() > 670 && node1.getTranslateY() < 690 || node1.getTranslateY() < 630 && node1.getTranslateY() > 610) {
+                                    score += 50;
+                                }
+
+                                //System.out.println(event.toString().substring(181));
+                                 {
+                                    try {
+                                        writefile(String.valueOf(node3.getTranslateY()));
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(GamepageController.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                                break;
+                            default:
+                                break;
                         }
-                        break;
-                    default:
-                        break;
-                }
-            }
+                    }
+                }); */
+    }
+
+    private void playmp3() throws Exception {
+        Playing producer = new Playing();
+        Thread t = new Thread(producer);
+        //t.setDaemon(true);
+        t.start();
+        stop.setOnAction(e -> {
+            t.stop();
         });
     }
 
     @FXML
+
     private void gotoMain(MouseEvent event) throws Exception {
         Parent main_page_parent = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
         Scene main_page_scene = new Scene(main_page_parent);
@@ -163,35 +173,44 @@ public class GamepageController {
     private void songDB() {
         config con = new config();
         String connectionStr = "jdbc:mysql://" + con.getUrlstr() + "/" + con.getDBName() + "?user=" + con.getUserstr() + "&password=" + con.getPw();
-        String songnum = "select  count(*) from Songlist";
-        String sqlStr = "select  Song_Title from Songlist";
-        MySQLConnector songnumber = new MySQLConnector(connectionStr, songnum);
-        int count = Integer.valueOf(songnumber.getResult().toString().trim());
-        MySQLConnector list = new MySQLConnector(connectionStr, sqlStr);
+        String songnum = "select count(*) from Songlist";
+        String songtitles = "select Song_Title from Songlist";
 
+        MySQLConnector MSC = new MySQLConnector();
+        MSC.connectDB(connectionStr);
+        //Song_number
+        MSC.doquery(songnum);
+        int count = Integer.valueOf(MSC.getResult().toString().trim());
+        MSC.clearresult();
+        //Song_title
+        MSC.doquery(songtitles);
         for (int i = 0; i < count; i++) {
-            songlist(list.getResult().toString().split("\n")[i], i);
+            songlist(MSC.getResult().toString().split("\n")[i], i);
         }
+        MSC.closeconnection();
         pane.setContent(song);
     }
 
     public void songlist(String result, int i) {
-        song.add(new Button(result), 0, i);
+        Button temp = new Button(result);
+        temp.setOnAction(e -> {
+            System.out.println(result + " ready to start!!!!");
+        });
+        song.add(temp, 0, i);
+
     }
 
-    public void fileclear() throws IOException {
-        String path = System.getProperty("user.dir") + "/src/music/test.txt";
-        try (FileWriter fw = new FileWriter(path)) {
-            fw.write("");
-        }
-    }
+    private static class Playing implements Runnable {
 
-    public void writefile(String pos) throws IOException {
-        String path = System.getProperty("user.dir") + "/src/music/test.txt";
-        try (FileWriter fw = new FileWriter(path, true)) {
-            fw.write(pos + " ");
-            System.out.println(score);
-            scoreshow.setText(String.valueOf(score));
+        @Override
+        public void run() {
+            try {
+                ConvertMP32PCM.playMP3("songlist\\2.mp3");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
         }
+
     }
 }
