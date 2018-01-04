@@ -28,7 +28,7 @@ public class MainpageController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Apolo");
         alert.setHeaderText("About Apolo");
-        alert.setGraphic(new ImageView(new Image("images/about.png")));
+        alert.setGraphic(new ImageView(new Image("images/Sun.png")));
         alert.setContentText("Designed by Sam.Chen & Eddie.Lu");
         alert.showAndWait();
     }
