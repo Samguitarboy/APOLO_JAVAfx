@@ -127,7 +127,7 @@
             <Insets right="258.0" />
          </StackPane.margin>
       </Circle>
-      <ImageView fitHeight="110.0" fitWidth="79.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
+      <ImageView fx:id="left" fitHeight="110.0" fitWidth="79.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
          <image>
             <Image url="@../images/left.png" />
          </image>
@@ -135,7 +135,7 @@
             <Insets bottom="50.0" left="262.0" />
          </StackPane.margin>
       </ImageView>
-      <ImageView fitHeight="110.0" fitWidth="79.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
+      <ImageView fx:id="up" fitHeight="110.0" fitWidth="79.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
          <image>
             <Image url="@../images/up.png" />
          </image>
@@ -143,7 +143,7 @@
             <Insets bottom="50.0" />
          </StackPane.margin>
       </ImageView>
-      <ImageView fitHeight="110.0" fitWidth="79.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_RIGHT">
+      <ImageView fx:id="right" fitHeight="110.0" fitWidth="79.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_RIGHT">
          <image>
             <Image url="@../images/right.png" />
          </image>
@@ -158,14 +158,6 @@
          <font>
             <Font size="37.0" />
          </font>
-      </Label>
-      <Label fx:id="hit" prefHeight="109.0" prefWidth="128.0" textFill="#5cfa50" StackPane.alignment="TOP_LEFT">
-         <font>
-            <Font size="31.0" />
-         </font>
-         <StackPane.margin>
-            <Insets left="10.0" top="20.0" />
-         </StackPane.margin>
       </Label>
       <Label fx:id="hit" prefHeight="92.0" prefWidth="119.0" textFill="#3afc3a" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
