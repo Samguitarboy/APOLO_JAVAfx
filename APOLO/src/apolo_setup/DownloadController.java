@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -42,7 +43,7 @@ public class DownloadController implements Initializable {
     private String videoid;
 
     @FXML
-    private Button download, sql;
+    private Button download;
 
     @FXML
     private TextField songtitle, a;
@@ -54,12 +55,14 @@ public class DownloadController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
 
         engine = web.getEngine();
         engine.load("https://www.google.com");
         songtitle.setText("");
         a.setText("");
+        download.setDisable(true);
+        songtitle.setOnMouseMoved(mouseHandler);
+        a.setOnMouseMoved(mouseHandler);
 
         engine.locationProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -78,17 +81,23 @@ public class DownloadController implements Initializable {
                                 exist.setTitle("ENJOY");
                                 exist.setContentText("Have a good day!!!");
                                 exist.showAndWait();
+                                engine.load("https://www.youtube.com");
                                 return;
                             }
+
                             Alert start = new Alert(AlertType.INFORMATION);
                             start.setTitle("start");
                             start.setContentText("Started Downloading");
                             start.showAndWait();
+
                             FileUtils.copyURLToFile(new URL(engine.getLocation()), download);
+
                             Alert done = new Alert(AlertType.INFORMATION);
                             done.setTitle("completed");
                             done.setContentText("Download is completed your download will be in: " + file.getAbsolutePath());
                             done.showAndWait();
+                            
+                            //songtoDB(songtitle.getText());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -103,11 +112,22 @@ public class DownloadController implements Initializable {
             videoid = temp[1];
             engine.load("https://www.convyoutube.com/watch?v=" + temp[1]);
         });
-        sql.setOnAction(e -> {
-            songtoDB(songtitle.getText());
-        }
-        );
+
     }
+
+    EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
+
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            if (0 == songtitle.getText().compareTo("") || 0 == a.getText().compareTo("")) {
+                download.setDisable(true);
+            } else {
+                download.setDisable(false);
+            }
+
+        }
+
+    };
 
     private void songtoDB(String title) {
         try {
