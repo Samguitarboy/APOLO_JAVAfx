@@ -54,7 +54,7 @@ public class PitchAnalysis {
 
             }
         };
-        AudioInputStream audioInputStream = getPcmAudioInputStream("songlist\\2.mp3");
+        AudioInputStream audioInputStream = getPcmAudioInputStream("songlist\\1.mp3");
         AudioDispatcher adp = new AudioDispatcher(audioInputStream, 2048, 0);
 
         adp.addAudioProcessor(new PitchProcessor(PitchEstimationAlgorithm.YIN, 44100, 2048, handler));

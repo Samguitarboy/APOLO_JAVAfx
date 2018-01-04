@@ -162,6 +162,7 @@ public class GamepageController {
     @FXML
 
     private void gotoMain(MouseEvent event) throws Exception {
+        
         Parent main_page_parent = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
         Scene main_page_scene = new Scene(main_page_parent);
         Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -205,7 +206,7 @@ public class GamepageController {
         @Override
         public void run() {
             try {
-                ConvertMP32PCM.playMP3("songlist\\2.mp3");
+                ConvertMP32PCM.playMP3("songlist\\1.mp3");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

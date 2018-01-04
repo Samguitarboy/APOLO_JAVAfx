@@ -1,5 +1,6 @@
 package apolo_setup;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,19 +9,24 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
+import javax.swing.event.ChangeListener;
+import org.apache.commons.io.FileUtils;
+        
 public class DownloadController implements Initializable {
 
     @FXML
@@ -49,16 +55,39 @@ public class DownloadController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+
         engine = web.getEngine();
         engine.load("https://www.youtube.com");
         songtitle.setText("");
         a.setText("");
-        try {
-            //PitchAnalysis pitch = new PitchAnalysis();
-            //pitch.getpitch();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        engine.locationProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                File file = new File("/songlist/");
+                String[] downloadableExtensions = {".doc", ".xls", ".zip", ".exe", ".rar", ".pdf", ".jar", ".png", ".jpg", ".gif",".mp3"};
+                for (String downloadAble : downloadableExtensions) {
+                    if (newValue.endsWith(downloadAble)) {
+                        try {
+                            if (!file.exists()) {
+                                file.mkdir();
+                            }
+                            File download = new File(file + "/" + newValue);
+                            if (download.exists()) {
+                                Alert alert = new Alert(AlertType.INFORMATION);
+                                alert.setTitle("Exists");
+                                Dialogs.create().title("Exists").message("What you're trying to download already exists").showInformation();
+                                return;
+                            }
+                            Dialogs.create().title("Downloading").message("Started Downloading").showInformation();
+                            FileUtils.copyURLToFile(new URL(engine.getLocation()), download);
+                            Dialogs.create().title("Download").message("Download is completed your download will be in: " + file.getAbsolutePath()).showInformation();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
 
         download.setOnAction(e -> {
             String[] temp;
