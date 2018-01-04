@@ -57,7 +57,7 @@ public class DownloadController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         engine = web.getEngine();
-        engine.load("https://www.google.com");
+        engine.load("https://www.youtube.com");
         songtitle.setText("");
         a.setText("");
         download.setDisable(true);
@@ -96,7 +96,7 @@ public class DownloadController implements Initializable {
                             done.setTitle("completed");
                             done.setContentText("Download is completed your download will be in: " + file.getAbsolutePath());
                             done.showAndWait();
-                            
+
                             //songtoDB(songtitle.getText());
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -105,12 +105,15 @@ public class DownloadController implements Initializable {
                 }
             }
         });
-
+        engine.load("https://www.youtube.com");
         download.setOnAction(e -> {
             String[] temp;
             temp = a.getText().split("youtu.be/");
             videoid = temp[1];
-            engine.load("https://www.convyoutube.com/watch?v=" + temp[1]);
+            a.setText("https://www.youtube.com/watch?v=" + temp[1]);
+            engine.load("http://www.flvto.biz/");
+
+            //engine.load("https://www.youtubeto.com/watch?v=" + temp[1]);
         });
 
     }

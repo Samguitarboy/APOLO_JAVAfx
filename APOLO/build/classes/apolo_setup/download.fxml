@@ -41,7 +41,7 @@
             <Insets left="300.0" right="600.0" top="35.0" />
          </StackPane.margin>
       </TextField>
-      <Button fx:id="download" mnemonicParsing="false" prefHeight="19.0" prefWidth="136.0" StackPane.alignment="TOP_RIGHT">
+      <Button fx:id="download" disable="true" mnemonicParsing="false" prefHeight="19.0" prefWidth="136.0" StackPane.alignment="TOP_RIGHT">
          <graphic>
             <HBox alignment="CENTER_RIGHT" prefHeight="23.0" prefWidth="150.0" spacing="10.0">
                <children>
