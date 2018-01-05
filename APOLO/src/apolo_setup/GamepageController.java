@@ -127,6 +127,57 @@ public class GamepageController {
         });
     }
 
+    private void beat_detect() {
+        BeatAnalysis beat = new BeatAnalysis();
+        DecimalFormat df = new DecimalFormat("##.000");
+        Thread t;
+        t = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    System.out.println(songselect + "~~~~~");
+                    beat.getbeat(songselect);
+                    pane.setExpanded(false);
+                    playmp3();
+
+                    Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(new TimerTask() {
+                        int index = 1;
+                        Double test = 0.0;
+
+                        @Override
+                        public void run() {
+                            // TODO Auto-generated method stub
+                            test = test + 0.001;
+                            //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
+                            //System.out.println(beat.getShowtime());
+                            if (1 == compare(Double.parseDouble(df.format(test)), beat.getShowtime().get(index))) {
+                                if (beat.getShowornot().get(index) > Float.parseFloat(df.format(beat.getAverageEnergy()))) {
+                                    System.out.println(beat.getShowtime().get(index));
+                                    node2.setVisible(true);
+                                    index++;
+                                } else {
+                                    node2.setVisible(false);
+                                    index++;
+                                }
+                            }
+                            if (index == beat.getShowtime().size()) {
+                                this.cancel();
+                            }
+
+                        }
+                    }, 0, 1);
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        });
+        t.start();
+    }
+
     private void pitch_detect() {
         PitchAnalysis pitch = new PitchAnalysis();
         DecimalFormat df = new DecimalFormat("##.000");
@@ -151,8 +202,8 @@ public class GamepageController {
                             // TODO Auto-generated method stub
                             test = test + 0.001;
                             //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
-                            //System.out.println(pitch.getShowtime().get(index));
-                            if (1 == compare(Double.parseDouble(df.format(test)), pitch.getShowtime().get(index))) {
+                            System.out.println(pitch.getShowtime().get(index));
+                            /*if (1 == compare(Double.parseDouble(df.format(test)), pitch.getShowtime().get(index))) {
                                 if (pitch.getShowornot().get(index) == 1) {
                                     System.out.println(pitch.getShowtime().get(index));
                                     node2.setVisible(true);
@@ -176,7 +227,7 @@ public class GamepageController {
                             }
                             if (leftkey == 85) {
                                 left.setOpacity(0.5);
-                            }
+                            }*/
                         }
                     }, 0, 1);
                 } catch (Exception ex) {
@@ -236,7 +287,7 @@ public class GamepageController {
             if (result != "") {
                 songselect = result.trim();
                 System.out.println(songselect + " ready to start!!!!");
-                pitch_detect();
+                beat_detect();
             }
         });
     }

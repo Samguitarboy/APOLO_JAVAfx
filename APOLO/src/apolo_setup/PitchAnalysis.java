@@ -62,7 +62,7 @@ public class PitchAnalysis {
     }
 
     private void compare(double time, float input) {
-        if (input == -1) {
+        if (input == -1 || input < 20000) {
             timestamp = time;
             pitchrecord = 0;
         } else if (input > pitchrecord && pitchrecord != 0) {
