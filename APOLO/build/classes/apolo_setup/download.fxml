@@ -28,17 +28,17 @@
       </WebView>
       <Label prefHeight="30.0" prefWidth="114.0" text="Youtube URL:" textFill="#deff07" StackPane.alignment="TOP_CENTER">
          <StackPane.margin>
-            <Insets right="692.0" top="35.0" />
+            <Insets right="660.0" top="35.0" />
          </StackPane.margin>
       </Label>
       <TextField fx:id="songtitle" promptText="請為這首歌取個名字" StackPane.alignment="TOP_CENTER">
          <StackPane.margin>
-            <Insets left="615.0" right="280.0" top="35.0" />
+            <Insets left="632.0" right="268.0" top="35.0" />
          </StackPane.margin>
       </TextField>
       <TextField fx:id="a" promptText="請輸入Youtube網址" StackPane.alignment="TOP_CENTER">
          <StackPane.margin>
-            <Insets left="300.0" right="600.0" top="35.0" />
+            <Insets left="323.0" right="580.0" top="35.0" />
          </StackPane.margin>
       </TextField>
       <Button fx:id="download" disable="true" mnemonicParsing="false" prefHeight="19.0" prefWidth="136.0" StackPane.alignment="TOP_RIGHT">
@@ -46,22 +46,34 @@
             <HBox alignment="CENTER_RIGHT" prefHeight="23.0" prefWidth="150.0" spacing="10.0">
                <children>
                   <Label prefHeight="20.0" prefWidth="93.0" text="download" />
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/download.png" />
+                        <Image url="@../images/download-to-laptop.png" />
                      </image>
                   </ImageView>
                </children>
             </HBox>
          </graphic>
          <StackPane.margin>
-            <Insets right="130.0" top="27.0" />
+            <Insets right="103.0" top="27.0" />
          </StackPane.margin>
       </Button>
-      <Button fx:id="backtomain" mnemonicParsing="false" onMouseClicked="#gotoMain" text="Main" StackPane.alignment="TOP_LEFT">
+      <Button fx:id="backtomain" mnemonicParsing="false" onMouseClicked="#gotoMain" prefHeight="40.0" prefWidth="97.0" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
-            <Insets left="121.0" top="35.0" />
+            <Insets left="94.0" top="27.0" />
          </StackPane.margin>
+         <graphic>
+            <HBox alignment="CENTER_RIGHT" prefHeight="23.0" prefWidth="150.0" spacing="10.0">
+               <children>
+                  <ImageView fitHeight="23.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Go-back48.png" />
+                     </image>
+                  </ImageView>
+                  <Label prefHeight="20.0" prefWidth="93.0" text="Main" />
+               </children>
+            </HBox>
+         </graphic>
       </Button>
    </children>
 </StackPane>
