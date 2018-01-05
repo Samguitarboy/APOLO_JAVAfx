@@ -30,9 +30,8 @@ public class PitchAnalysis {
     public ArrayList<Integer> getShowornot() {
         return showornot;
     }
-    
 
-    public void getpitch() throws Exception {
+    public void getpitch(String song) throws Exception {
         DecimalFormat df = new DecimalFormat("##.000");
         PitchDetectionHandler handler = new PitchDetectionHandler() {
             @Override
@@ -43,18 +42,19 @@ public class PitchAnalysis {
                 if (count == 1) {
                     System.out.println(Double.parseDouble(df.format(timestamp)) + " " + pitchrecord);
                     showtime.add(Double.parseDouble(df.format(timestamp)));
-                    if(pitchrecord==0.0)
+                    if (pitchrecord == 0.0) {
                         showornot.add(0);
-                    else
+                    } else {
                         showornot.add(1);
-                    count=0;
+                    }
+                    count = 0;
                     timestamp = 0;
                     pitchrecord = -1;
                 }
 
             }
         };
-        AudioInputStream audioInputStream = getPcmAudioInputStream("songlist\\1.mp3");
+        AudioInputStream audioInputStream = getPcmAudioInputStream("songlist\\" + song + ".mp3");
         AudioDispatcher adp = new AudioDispatcher(audioInputStream, 2048, 0);
 
         adp.addAudioProcessor(new PitchProcessor(PitchEstimationAlgorithm.YIN, 44100, 2048, handler));
@@ -65,7 +65,7 @@ public class PitchAnalysis {
         if (input == -1) {
             timestamp = time;
             pitchrecord = 0;
-        } else if (input > pitchrecord && pitchrecord!=0) {
+        } else if (input > pitchrecord && pitchrecord != 0) {
             timestamp = time;
             pitchrecord = input;
         }

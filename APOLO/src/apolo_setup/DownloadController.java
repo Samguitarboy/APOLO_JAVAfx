@@ -97,7 +97,7 @@ public class DownloadController implements Initializable {
                             done.setContentText("Download is completed your download will be in: " + file.getAbsolutePath());
                             done.showAndWait();
 
-                            //songtoDB(songtitle.getText());
+                            songtoDB(songtitle.getText());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -105,7 +105,6 @@ public class DownloadController implements Initializable {
                 }
             }
         });
-        engine.load("https://www.youtube.com");
         download.setOnAction(e -> {
             String[] temp;
             temp = a.getText().split("youtu.be/");
@@ -133,37 +132,15 @@ public class DownloadController implements Initializable {
     };
 
     private void songtoDB(String title) {
-        try {
-            Connection conn = null;
-            Statement stmt = null;
-            ResultSet rs = null;
-            System.out.println(title);
-            config con = new config();
-            conn = (Connection) DriverManager.getConnection("jdbc:mysql://" + con.getUrlstr() + "/" + con.getDBName() + "?user=" + con.getUserstr() + "&password=" + con.getPw());
-            System.out.println(conn);
-            System.out.println("Database Connection !");
-            stmt = conn.createStatement();
-            System.out.println(videoid);
-            /*String insertsong = "insert into Songlist values(N'" + title + "',null,CURRENT_DATE,'" + videoid + "')";
-            stmt.executeUpdate(insertsong);*/
-            String SQL = "select * from Songlist";
-            rs = stmt.executeQuery(SQL);
 
-            ResultSetMetaData metaData = rs.getMetaData();
-            int numCol = metaData.getColumnCount();
-            while (rs.next()) {
-                for (int i = 1; i <= numCol; i++) {
-                    System.out.print("\t\t" + rs.getObject(i));
-                }
-                System.out.println();
-            }
-            System.out.println();
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException sqlex) {
-            sqlex.printStackTrace();
-        }
+        config con = new config();
+        String connectionStr = "jdbc:mysql://" + con.getUrlstr() + "/" + con.getDBName() + "?user=" + con.getUserstr() + "&password=" + con.getPw();
+        String insertsong = "insert into Songlist values(N'" + title + "',null,CURRENT_DATE,'" + videoid + "')";
+        MySQLConnector MSC_insert = new MySQLConnector();
+        MSC_insert.connectDB(connectionStr);
+        System.out.println(title);
+        MSC_insert.doInsert(insertsong);
+        MSC_insert.closeconnection();
     }
     /*
     public static String unicodeToString(String str) {

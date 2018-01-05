@@ -30,6 +30,7 @@ import javafx.util.Duration;
 
 public class GamepageController {
 
+    private String songselect = "";
     @FXML
     private Circle node1, node2, node3;
     @FXML
@@ -49,75 +50,20 @@ public class GamepageController {
 
     public void initialize() {
         songDB();
-        PitchAnalysis pitch = new PitchAnalysis();
-        DecimalFormat df = new DecimalFormat("##.000");
-        Thread t;
-        t = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    pitch.getpitch();
-                    pane.setVisible(false);
-                    playmp3();
-
-                    Timer timer = new Timer();
-                    timer.scheduleAtFixedRate(new TimerTask() {
-                        int index = 1;
-                        Double test = 0.0;
-
-                        @Override
-                        public void run() {
-                            // TODO Auto-generated method stub
-                            test = test + 0.001;
-                            //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
-                            //System.out.println(pitch.getShowtime().get(index));
-                            if (1 == compare(Double.parseDouble(df.format(test)), pitch.getShowtime().get(index))) {
-                                if (pitch.getShowornot().get(index) == 1) {
-                                    System.out.println(pitch.getShowtime().get(index));
-                                    node2.setVisible(true);
-                                    index++;
-                                } else {
-                                    node2.setVisible(false);
-                                    index++;
-                                }
-                            }
-                            if (index == pitch.getShowtime().size()) {
-                                this.cancel();
-                            }
-                            rightkey++;
-                            leftkey++;
-                            upkey++;
-                            if (upkey == 85) {
-                                up.setOpacity(0.5);
-                            }
-                            if (rightkey == 85) {
-                                right.setOpacity(0.5);
-                            }
-                            if (leftkey == 85) {
-                                left.setOpacity(0.5);
-                            }
-                        }
-                    }, 0, 1);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        t.start();
-       /*  <Circle fx:id="node1" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="TOP_LEFT">
+        /*  <Circle fx:id="node1" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="TOP_LEFT">
          <fill>
             <RadialGradient centerX="0.5113636363636364" centerY="0.5" focusAngle="75.96" focusDistance="0.04878048780487809" radius="0.4390243902439024">
                <stops>
                   <Stop color="#2419bc" />
                   <Stop color="#0e5ac2" offset="1.0" />*/
         Circle testnode = new Circle();
-        testnode.setRadius(45);testnode.setStrokeType(StrokeType.INSIDE);
+        testnode.setRadius(45);
+        testnode.setStrokeType(StrokeType.INSIDE);
         testnode.setFill(node1.getFill());
         testnode.setTranslateY(200);
         testnode.setTranslateX(20);
-      //  TranslateTransition nodemove =new TranslateTransition(Duration.millis(1000),node1);
-        
+        //  TranslateTransition nodemove =new TranslateTransition(Duration.millis(1000),node1);
+
         scene.setOnKeyPressed((Event event) -> {
             if (event.toString().substring(181) != null) {
                 switch (event.toString().substring(181)) {
@@ -181,8 +127,68 @@ public class GamepageController {
         });
     }
 
+    private void pitch_detect() {
+        PitchAnalysis pitch = new PitchAnalysis();
+        DecimalFormat df = new DecimalFormat("##.000");
+        Thread t;
+        t = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    System.out.println(songselect + "~~~~~");
+                    pitch.getpitch(songselect);
+                    pane.setExpanded(false);
+                    playmp3();
+
+                    Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(new TimerTask() {
+                        int index = 1;
+                        Double test = 0.0;
+
+                        @Override
+                        public void run() {
+                            // TODO Auto-generated method stub
+                            test = test + 0.001;
+                            //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
+                            //System.out.println(pitch.getShowtime().get(index));
+                            if (1 == compare(Double.parseDouble(df.format(test)), pitch.getShowtime().get(index))) {
+                                if (pitch.getShowornot().get(index) == 1) {
+                                    System.out.println(pitch.getShowtime().get(index));
+                                    node2.setVisible(true);
+                                    index++;
+                                } else {
+                                    node2.setVisible(false);
+                                    index++;
+                                }
+                            }
+                            if (index == pitch.getShowtime().size()) {
+                                this.cancel();
+                            }
+                            rightkey++;
+                            leftkey++;
+                            upkey++;
+                            if (upkey == 85) {
+                                up.setOpacity(0.5);
+                            }
+                            if (rightkey == 85) {
+                                right.setOpacity(0.5);
+                            }
+                            if (leftkey == 85) {
+                                left.setOpacity(0.5);
+                            }
+                        }
+                    }, 0, 1);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        t.start();
+    }
+
     private void playmp3() throws Exception {
-        Playing producer = new Playing();
+        Playing producer = new Playing(songselect);
         Thread t = new Thread(producer);
         //t.setDaemon(true);
         t.start();
@@ -192,7 +198,6 @@ public class GamepageController {
     }
 
     @FXML
-
     private void gotoMain(MouseEvent event) throws Exception {
 
         Parent main_page_parent = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
@@ -226,19 +231,28 @@ public class GamepageController {
 
     public void songlist(String result, int i) {
         Button temp = new Button(result);
-        temp.setOnAction(e -> {
-            System.out.println(result + " ready to start!!!!");
-        });
         song.add(temp, 0, i);
-
+        temp.setOnAction(e -> {
+            if (result != "") {
+                songselect = result.trim();
+                System.out.println(songselect + " ready to start!!!!");
+                pitch_detect();
+            }
+        });
     }
 
     private static class Playing implements Runnable {
 
+        private String play_song = "";
+
+        public Playing(String songpath) {
+            this.play_song = songpath;
+        }
+
         @Override
         public void run() {
             try {
-                ConvertMP32PCM.playMP3("songlist\\1.mp3");
+                ConvertMP32PCM.playMP3("songlist\\" + play_song + ".mp3");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
