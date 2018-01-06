@@ -23,6 +23,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.NodeOrientation;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -48,12 +49,15 @@ public class GamepageController {
     private GridPane song;
     int score = 0;
     int leftkey = 0, upkey = 0, rightkey = 0;
-  
+
+    Image nodeview = new Image("http://hajsoftutorial.com/im/car.png");
 
     public void initialize() {
         songDB();
         //  TranslateTransition nodemove =new TranslateTransition(Duration.millis(1000),node1);
-        Image node = new Image("http://hajsoftutorial.com/im/car.png");
+        this.newleftnode();
+        this.newmidnode();
+        this.newrightnode();
         scene.setOnKeyPressed((Event event) -> {
             if (event.toString().substring(181) != null) {
                 switch (event.toString().substring(181)) {
@@ -156,15 +160,18 @@ public class GamepageController {
                             if (index == beat.getShowtime().size()) {
                                 this.cancel();
                             }
-                            leftkey ++;
+                            leftkey++;
                             upkey++;
-                            rightkey ++;
-                            if(leftkey==85)
+                            rightkey++;
+                            if (leftkey == 85) {
                                 left.setOpacity(0.5);
-                            if(rightkey==85)
+                            }
+                            if (rightkey == 85) {
                                 right.setOpacity(0.5);
-                            if(upkey==85)
+                            }
+                            if (upkey == 85) {
                                 up.setOpacity(0.5);
+                            }
                         }
                     }, 0, 1);
 
@@ -175,6 +182,24 @@ public class GamepageController {
             }
         });
         t.start();
+    }
+
+    private void newleftnode() {
+        ImageView leftnode = new ImageView(nodeview);
+        leftnode.setTranslateX(-298);
+        leftnode.setTranslateY(-500);
+        scene.getChildren().add(leftnode);
+    }
+
+    private void newmidnode() {
+        ImageView midnode = new ImageView(nodeview);
+        scene.getChildren().add(midnode);
+    }
+
+    private void newrightnode() {
+        ImageView rightnode = new ImageView(nodeview);
+        rightnode.setTranslateX(298);
+        scene.getChildren().add(rightnode);
     }
 
     private void pitch_detect() {
