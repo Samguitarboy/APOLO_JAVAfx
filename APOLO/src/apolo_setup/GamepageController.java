@@ -23,6 +23,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.NodeOrientation;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeType;
@@ -47,23 +48,12 @@ public class GamepageController {
     private GridPane song;
     int score = 0;
     int leftkey = 0, upkey = 0, rightkey = 0;
+  
 
     public void initialize() {
         songDB();
-        /*  <Circle fx:id="node1" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="TOP_LEFT">
-         <fill>
-            <RadialGradient centerX="0.5113636363636364" centerY="0.5" focusAngle="75.96" focusDistance="0.04878048780487809" radius="0.4390243902439024">
-               <stops>
-                  <Stop color="#2419bc" />
-                  <Stop color="#0e5ac2" offset="1.0" />*/
-        Circle testnode = new Circle();
-        testnode.setRadius(45);
-        testnode.setStrokeType(StrokeType.INSIDE);
-        testnode.setFill(node1.getFill());
-        testnode.setTranslateY(200);
-        testnode.setTranslateX(20);
         //  TranslateTransition nodemove =new TranslateTransition(Duration.millis(1000),node1);
-
+        Image node = new Image("http://hajsoftutorial.com/im/car.png");
         scene.setOnKeyPressed((Event event) -> {
             if (event.toString().substring(181) != null) {
                 switch (event.toString().substring(181)) {
@@ -139,6 +129,7 @@ public class GamepageController {
                     System.out.println(songselect + "~~~~~");
                     beat.getbeat(songselect);
                     pane.setExpanded(false);
+                    pane.setVisible(false);
                     playmp3();
 
                     Timer timer = new Timer();
@@ -165,7 +156,15 @@ public class GamepageController {
                             if (index == beat.getShowtime().size()) {
                                 this.cancel();
                             }
-
+                            leftkey ++;
+                            upkey++;
+                            rightkey ++;
+                            if(leftkey==85)
+                                left.setOpacity(0.5);
+                            if(rightkey==85)
+                                right.setOpacity(0.5);
+                            if(upkey==85)
+                                up.setOpacity(0.5);
                         }
                     }, 0, 1);
 
