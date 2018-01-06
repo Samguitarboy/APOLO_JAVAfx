@@ -55,9 +55,7 @@ public class GamepageController {
     public void initialize() {
         songDB();
         //  TranslateTransition nodemove =new TranslateTransition(Duration.millis(1000),node1);
-        this.newleftnode();
-        this.newmidnode();
-        this.newrightnode();
+
         scene.setOnKeyPressed((Event event) -> {
             if (event.toString().substring(181) != null) {
                 switch (event.toString().substring(181)) {
@@ -124,6 +122,9 @@ public class GamepageController {
     private void beat_detect() {
         BeatAnalysis beat = new BeatAnalysis();
         DecimalFormat df = new DecimalFormat("##.000");
+        newleftnode();
+        newmidnode();
+        newrightnode();
         Thread t;
         t = new Thread(new Runnable() {
 
@@ -132,7 +133,6 @@ public class GamepageController {
                 try {
                     System.out.println(songselect + "~~~~~");
                     beat.getbeat(songselect);
-                    pane.setExpanded(false);
                     pane.setVisible(false);
                     playmp3();
 
@@ -189,17 +189,28 @@ public class GamepageController {
         leftnode.setTranslateX(-298);
         leftnode.setTranslateY(-500);
         scene.getChildren().add(leftnode);
+        TranslateTransition move = new TranslateTransition(Duration.millis(3000), leftnode);
+        move.setByY(1000);
+        move.play();
     }
 
     private void newmidnode() {
         ImageView midnode = new ImageView(nodeview);
+        midnode.setTranslateY(-500);
         scene.getChildren().add(midnode);
+        TranslateTransition move = new TranslateTransition(Duration.millis(3000), midnode);
+        move.setByY(1000);
+        move.play();
     }
 
     private void newrightnode() {
         ImageView rightnode = new ImageView(nodeview);
         rightnode.setTranslateX(298);
+        rightnode.setTranslateY(-500);
         scene.getChildren().add(rightnode);
+        TranslateTransition move = new TranslateTransition(Duration.millis(3000), rightnode);
+        move.setByY(1000);
+        move.play();
     }
 
     private void pitch_detect() {
@@ -311,6 +322,7 @@ public class GamepageController {
             if (result != "") {
                 songselect = result.trim();
                 System.out.println(songselect + " ready to start!!!!");
+                pane.setExpanded(false);
                 beat_detect();
             }
         });

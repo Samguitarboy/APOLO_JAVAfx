@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="APOLO.jar" size="2060084" download="eager" />
+    <jar href="APOLO.jar" size="2060076" download="eager" />
     <jar href="lib\jfoenix.jar" size="2401594" download="eager" />
     <jar href="lib\jlayer-1.0.1.jar" size="143624" download="eager" />
     <jar href="lib\lwbd.jar" size="482054" download="eager" />
