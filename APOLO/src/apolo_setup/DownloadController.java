@@ -2,12 +2,6 @@ package apolo_setup;
 
 import java.io.File;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -30,16 +24,6 @@ import org.apache.commons.io.FileUtils;
 
 public class DownloadController implements Initializable {
 
-    @FXML
-    private void gotoMain(MouseEvent event) throws Exception {
-        Parent main_page_parent = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
-        Scene main_page_scene = new Scene(main_page_parent);
-        Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        app_stage.setScene(main_page_scene);
-        app_stage.show();
-
-    }
-
     private String videoid;
 
     @FXML
@@ -52,6 +36,17 @@ public class DownloadController implements Initializable {
     private WebView web;
 
     private WebEngine engine;
+
+    @FXML
+    private void gotoMain(MouseEvent event) throws Exception {
+        engine.load("https://www.youtube.com");
+        Parent main_page_parent = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
+        Scene main_page_scene = new Scene(main_page_parent);
+        Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        app_stage.setScene(main_page_scene);
+        app_stage.show();
+
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -98,6 +93,7 @@ public class DownloadController implements Initializable {
                             done.showAndWait();
 
                             songtoDB(songtitle.getText());
+                            engine.load("https://www.youtube.com");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -140,7 +136,7 @@ public class DownloadController implements Initializable {
         MSC_insert.connectDB(connectionStr);
         System.out.println(title);
         MSC_insert.doInsert(insertsong);
-        MSC_insert.closeconnection();
+        //MSC_insert.closeconnection();
     }
     /*
     public static String unicodeToString(String str) {
