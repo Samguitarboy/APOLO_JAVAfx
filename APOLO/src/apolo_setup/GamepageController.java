@@ -19,8 +19,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.text.DecimalFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -33,7 +31,7 @@ public class GamepageController {
 
     private String songselect = "";
     @FXML
-    private Circle node1, node2, node3;
+    private Circle node2;
     @FXML
     private StackPane scene;
     @FXML
@@ -48,17 +46,16 @@ public class GamepageController {
     private GridPane song;
     int score = 0;
     int leftkey = 0, upkey = 0, rightkey = 0;
-
-    Image nodeview = new Image("http://hajsoftutorial.com/im/car.png");
+    Boolean start = false;
+    Image nodeview = new Image("/images/start.png");
 
     public void initialize() {
         songDB();
-        //  TranslateTransition nodemove =new TranslateTransition(Duration.millis(1000),node1);
 
         scene.setOnKeyPressed((Event event) -> {
             if (event.toString().substring(181) != null) {
                 switch (event.toString().substring(181)) {
-                    case "LEFT]":
+                    /*case "LEFT]":
                         left.setOpacity(1);
                         leftkey = 0;
                         node1.setVisible(false);
@@ -91,7 +88,7 @@ public class GamepageController {
                             hit.setText("Fail!");
                             hit.setTextFill(Color.RED);
                         }
-                        break;
+                        break;*/
                     case "UP]":
                         up.setOpacity(1);
                         upkey = 0;
@@ -121,9 +118,7 @@ public class GamepageController {
     private void beat_detect() {
         BeatAnalysis beat = new BeatAnalysis();
         DecimalFormat df = new DecimalFormat("##.000");
-        //newleftnode();
 
-        //newrightnode();
         Thread t;
         t = new Thread(new Runnable() {
 
@@ -137,12 +132,18 @@ public class GamepageController {
                     Timer timer = new Timer();
                     timer.scheduleAtFixedRate(new TimerTask() {
                         int index = 1;
-                        Double test = 0.0;
+                        Double test = new Double("0.0");
+                        Double two = new Double("2.110");
 
                         @Override
                         public void run() {
                             // TODO Auto-generated method stub
                             test = test + 0.001;
+                            if (1 != compare(Double.parseDouble(df.format(test)), Double.parseDouble(df.format(two))) && -1 != compare(Double.parseDouble(df.format(test)), Double.parseDouble(df.format(two)))) {
+                                //System.out.println(test);
+                                start = true;
+                            }
+                            //System.out.println(test);
                             //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
                             //System.out.println(beat.getShowtime());
                             if (1 == compare(Double.parseDouble(df.format(test)), beat.getShowtime().get(index))) {
@@ -185,7 +186,10 @@ public class GamepageController {
                             }
                         }
                     }, 0, 1);
-                    playmp3();
+                        Thread t1 = new Thread(r1);
+                        t1.start();
+
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -194,6 +198,17 @@ public class GamepageController {
         });
         t.start();
     }
+    private Runnable r1 = new Runnable() {
+        public void run() {
+            try {
+                Thread.sleep(2000);
+                playmp3();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    };
 
     private void newleftnode() {
         ImageView leftnode = new ImageView(nodeview);
@@ -203,7 +218,7 @@ public class GamepageController {
         TranslateTransition move = new TranslateTransition(Duration.millis(3000), leftnode);
         move.setByY(1050);
         move.play();
-       // System.out.println(leftnode.getTranslateY());
+        // System.out.println(leftnode.getTranslateY());
         move.setOnFinished(e -> {
             leftnode.setVisible(false);
         });

@@ -88,19 +88,6 @@
             <Insets right="200.0" />
          </StackPane.margin>
       </Line>
-      <Circle fx:id="node1" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="TOP_LEFT">
-         <fill>
-            <RadialGradient centerX="0.5113636363636364" centerY="0.5" focusAngle="75.96" focusDistance="0.04878048780487809" radius="0.4390243902439024">
-               <stops>
-                  <Stop color="#2419bc" />
-                  <Stop color="#0e5ac2" offset="1.0" />
-               </stops>
-            </RadialGradient>
-         </fill>
-         <StackPane.margin>
-            <Insets left="257.0" />
-         </StackPane.margin>
-      </Circle>
       <Circle fx:id="node2" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="TOP_CENTER">
          <StackPane.margin>
             <Insets top="500.0" />
@@ -113,19 +100,6 @@
                </stops>
             </RadialGradient>
          </fill>
-      </Circle>
-      <Circle fx:id="node3" radius="45.0" stroke="#0c14b5" strokeType="INSIDE" StackPane.alignment="TOP_RIGHT">
-         <fill>
-            <RadialGradient centerX="0.5113636363636364" centerY="0.5" focusAngle="75.96" focusDistance="0.04878048780487809" radius="0.4390243902439024">
-               <stops>
-                  <Stop color="#2419bc" />
-                  <Stop color="#0e5ac2" offset="1.0" />
-               </stops>
-            </RadialGradient>
-         </fill>
-         <StackPane.margin>
-            <Insets right="258.0" />
-         </StackPane.margin>
       </Circle>
       <ImageView fx:id="left" fitHeight="110.0" fitWidth="79.0" opacity="0.5" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT">
          <image>
