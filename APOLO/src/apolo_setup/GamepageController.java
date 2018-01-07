@@ -20,14 +20,11 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.text.DecimalFormat;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.NodeOrientation;
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 
 public class GamepageController {
@@ -122,9 +119,9 @@ public class GamepageController {
     private void beat_detect() {
         BeatAnalysis beat = new BeatAnalysis();
         DecimalFormat df = new DecimalFormat("##.000");
-        newleftnode();
-        newmidnode();
-        newrightnode();
+        //newleftnode();
+
+        //newrightnode();
         Thread t;
         t = new Thread(new Runnable() {
 
@@ -145,15 +142,21 @@ public class GamepageController {
                         public void run() {
                             // TODO Auto-generated method stub
                             test = test + 0.001;
+
                             //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
                             //System.out.println(beat.getShowtime());
                             if (1 == compare(Double.parseDouble(df.format(test)), beat.getShowtime().get(index))) {
                                 if (beat.getShowornot().get(index) > Float.parseFloat(df.format(beat.getAverageEnergy()))) {
                                     System.out.println(beat.getShowtime().get(index));
-                                    node2.setVisible(true);
+                                    Platform.runLater(() -> {
+                                        newmidnode();
+                                        node2.setVisible(true);
+                                    });
                                     index++;
                                 } else {
-                                    node2.setVisible(false);
+                                    Platform.runLater(() -> {
+                                        node2.setVisible(false);
+                                    });
                                     index++;
                                 }
                             }
