@@ -19,6 +19,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.text.DecimalFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -131,7 +133,6 @@ public class GamepageController {
                     System.out.println(songselect + "~~~~~");
                     beat.getbeat(songselect);
                     pane.setVisible(false);
-                    playmp3();
 
                     Timer timer = new Timer();
                     timer.scheduleAtFixedRate(new TimerTask() {
@@ -142,14 +143,21 @@ public class GamepageController {
                         public void run() {
                             // TODO Auto-generated method stub
                             test = test + 0.001;
-
                             //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
                             //System.out.println(beat.getShowtime());
                             if (1 == compare(Double.parseDouble(df.format(test)), beat.getShowtime().get(index))) {
                                 if (beat.getShowornot().get(index) > Float.parseFloat(df.format(beat.getAverageEnergy()))) {
-                                    System.out.println(beat.getShowtime().get(index));
+                                    // System.out.println(beat.getShowtime().get(index));
                                     Platform.runLater(() -> {
-                                        newmidnode();
+                                        if (beat.getShowtime().get(index) * 1000 % 3 == 1) {
+                                            newmidnode();
+                                        }
+                                        if (beat.getShowtime().get(index) * 1000 % 3 == 2) {
+                                            newleftnode();
+                                        }
+                                        if (beat.getShowtime().get(index) * 1000 % 3 == 0) {
+                                            newrightnode();
+                                        }
                                         node2.setVisible(true);
                                     });
                                     index++;
@@ -177,7 +185,7 @@ public class GamepageController {
                             }
                         }
                     }, 0, 1);
-
+                    playmp3();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -193,8 +201,13 @@ public class GamepageController {
         leftnode.setTranslateY(-500);
         scene.getChildren().add(leftnode);
         TranslateTransition move = new TranslateTransition(Duration.millis(3000), leftnode);
-        move.setByY(1000);
+        move.setByY(1050);
         move.play();
+       // System.out.println(leftnode.getTranslateY());
+        move.setOnFinished(e -> {
+            leftnode.setVisible(false);
+        });
+
     }
 
     private void newmidnode() {
@@ -202,8 +215,11 @@ public class GamepageController {
         midnode.setTranslateY(-500);
         scene.getChildren().add(midnode);
         TranslateTransition move = new TranslateTransition(Duration.millis(3000), midnode);
-        move.setByY(1000);
+        move.setByY(1050);
         move.play();
+        move.setOnFinished(e -> {
+            midnode.setVisible(false);
+        });
     }
 
     private void newrightnode() {
@@ -212,8 +228,11 @@ public class GamepageController {
         rightnode.setTranslateY(-500);
         scene.getChildren().add(rightnode);
         TranslateTransition move = new TranslateTransition(Duration.millis(3000), rightnode);
-        move.setByY(1000);
+        move.setByY(1050);
         move.play();
+        move.setOnFinished(e -> {
+            rightnode.setVisible(false);
+        });
     }
 
     private void pitch_detect() {
