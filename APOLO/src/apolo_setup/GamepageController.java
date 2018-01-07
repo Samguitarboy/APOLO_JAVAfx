@@ -55,15 +55,15 @@ public class GamepageController {
         scene.setOnKeyPressed((Event event) -> {
             if (event.toString().substring(181) != null) {
                 switch (event.toString().substring(181)) {
-                    /*case "LEFT]":
+                    case "LEFT]":
                         left.setOpacity(1);
                         leftkey = 0;
-                        node1.setVisible(false);
-                        if (node1.getTranslateY() < 670 && node1.getTranslateY() > 630) {
+                        node2.setVisible(false);
+                        if (node2.getTranslateY() < 670 && node2.getTranslateY() > 630) {
                             score += 100;
                             hit.setText("Perfect!!");
                             hit.setTextFill(Color.BLUE);
-                        } else if (node1.getTranslateY() > 670 && node1.getTranslateY() < 690 || node1.getTranslateY() < 630 && node1.getTranslateY() > 610) {
+                        } else if (node2.getTranslateY() > 670 && node2.getTranslateY() < 690 || node2.getTranslateY() < 630 && node2.getTranslateY() > 610) {
                             score += 50;
                             hit.setText("Great!");
                             hit.setTextFill(Color.GREEN);
@@ -75,12 +75,12 @@ public class GamepageController {
                     case "RIGHT]":
                         right.setOpacity(1);
                         rightkey = 0;
-                        node3.setVisible(false);
-                        if (node3.getTranslateY() < 670 && node3.getTranslateY() > 630) {
+                        node2.setVisible(false);
+                        if (node2.getTranslateY() < 670 && node2.getTranslateY() > 630) {
                             score += 100;
                             hit.setText("Perfect!!");
                             hit.setTextFill(Color.BLUE);
-                        } else if (node3.getTranslateY() > 670 && node3.getTranslateY() < 690 || node3.getTranslateY() < 630 && node3.getTranslateY() > 610) {
+                        } else if (node2.getTranslateY() > 670 && node2.getTranslateY() < 690 || node2.getTranslateY() < 630 && node2.getTranslateY() > 610) {
                             score += 50;
                             hit.setText("Great!");
                             hit.setTextFill(Color.GREEN);
@@ -88,7 +88,7 @@ public class GamepageController {
                             hit.setText("Fail!");
                             hit.setTextFill(Color.RED);
                         }
-                        break;*/
+                        break;
                     case "UP]":
                         up.setOpacity(1);
                         upkey = 0;
@@ -148,7 +148,7 @@ public class GamepageController {
                             //System.out.println(beat.getShowtime());
                             if (1 == compare(Double.parseDouble(df.format(test)), beat.getShowtime().get(index))) {
                                 if (beat.getShowornot().get(index) > Float.parseFloat(df.format(beat.getAverageEnergy()))) {
-                                    // System.out.println(beat.getShowtime().get(index));
+                                    //System.out.println(beat.getShowtime().get(index));
                                     Platform.runLater(() -> {
                                         if (beat.getShowtime().get(index) * 1000 % 3 == 1) {
                                             newmidnode();
@@ -186,9 +186,8 @@ public class GamepageController {
                             }
                         }
                     }, 0, 1);
-                        Thread t1 = new Thread(r1);
-                        t1.start();
-
+                    Thread t1 = new Thread(r1);
+                    t1.start();
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -215,14 +214,31 @@ public class GamepageController {
         leftnode.setTranslateX(-298);
         leftnode.setTranslateY(-500);
         scene.getChildren().add(leftnode);
-        TranslateTransition move = new TranslateTransition(Duration.millis(3000), leftnode);
+
+      /*  Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            int count = -500;
+
+            @Override
+            public void run() {
+                count++;
+                leftnode.setTranslateY(count);
+                if (count > 500) {
+                    System.out.println("end");
+                    //  scene.getChildren().remove(leftnode);
+                    //  leftnode.setVisible(false);
+                    leftnode.setVisible(false);
+                    timer.cancel();
+                }
+            }
+        }, 0, 2);*/
+       TranslateTransition move = new TranslateTransition(Duration.millis(3000), leftnode);
         move.setByY(1050);
         move.play();
-        // System.out.println(leftnode.getTranslateY());
+       // System.out.println(leftnode.getTranslateY());
         move.setOnFinished(e -> {
             leftnode.setVisible(false);
         });
-
     }
 
     private void newmidnode() {
@@ -363,6 +379,7 @@ public class GamepageController {
                 beat_detect();
             }
         });
+
     }
 
     private static class Playing implements Runnable {
