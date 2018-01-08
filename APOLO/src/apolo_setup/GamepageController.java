@@ -60,7 +60,6 @@ public class GamepageController {
 
     public void initialize() {
         songDB();
-        //key_detection();
     }
 
     private void beat_detect() {
@@ -161,26 +160,6 @@ public class GamepageController {
             }
         }
         );
-
-        BooleanBinding hit = Bindings.createBooleanBinding(() -> {
-            System.out.println(leftnode.translateYProperty().getValue());
-            return (true);
-        }, leftnode.translateXProperty(), leftnode.translateYProperty());
-
-        hit.addListener((obs, wasHit, isNowHit) -> {
-        });
-        scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.LEFT) {
-                System.out.println("LEFT");
-                left.setOpacity(1);
-                leftkey = 0;
-                /*Double test = leftnode.translateYProperty().getValue();
-                if (true) {
-                    System.out.println(Double.parseDouble(df.format(test)));
-                }*/
-            }
-        });
-
     }
 
     private void newmidnode() {
@@ -197,22 +176,6 @@ public class GamepageController {
             }
         }
         );
-
-        BooleanBinding hit = Bindings.createBooleanBinding(() -> {
-            scene.setOnKeyPressed(e -> {
-                if (e.getCode() == KeyCode.UP) {
-                    System.out.println("UP");
-                    up.setOpacity(1);
-                    upkey = 0;
-                }
-            });
-            //System.out.println(midnode.translateYProperty().getValue());
-            return (true);
-        }, midnode.translateXProperty(), midnode.translateYProperty());
-
-        hit.addListener((obs, wasHit, isNowHit) -> {
-        });
-
     }
 
     private void newrightnode() {
@@ -229,22 +192,6 @@ public class GamepageController {
             }
         }
         );
-
-        BooleanBinding hit = Bindings.createBooleanBinding(() -> {
-            scene.setOnKeyPressed(e -> {
-                if (e.getCode() == KeyCode.RIGHT) {
-                    System.out.println("RIGHT");
-                    right.setOpacity(1);
-                    rightkey = 0;
-                }
-            });
-            //System.out.println(rightnode.translateYProperty().getValue());
-            return (true);
-        }, rightnode.translateXProperty(), rightnode.translateYProperty());
-
-        hit.addListener((obs, wasHit, isNowHit) -> {
-        });
-
     }
 
     private void key_detection() {
