@@ -21,10 +21,17 @@ import javafx.stage.Stage;
 import java.text.DecimalFormat;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 public class GamepageController {
@@ -33,11 +40,13 @@ public class GamepageController {
     @FXML
     private Circle node2;
     @FXML
+    private Pane root;
+    @FXML
     private StackPane scene;
     @FXML
     private Label scoreshow, hit;
     @FXML
-    private JFXButton stop;
+    private JFXButton stop, stoptempo;
     @FXML
     private TitledPane pane;
     @FXML
@@ -51,68 +60,7 @@ public class GamepageController {
 
     public void initialize() {
         songDB();
-
-        scene.setOnKeyPressed((Event event) -> {
-            if (event.toString().substring(181) != null) {
-                switch (event.toString().substring(181)) {
-                    case "LEFT]":
-                        left.setOpacity(1);
-                        leftkey = 0;
-                        node2.setVisible(false);
-                        if (node2.getTranslateY() < 670 && node2.getTranslateY() > 630) {
-                            score += 100;
-                            hit.setText("Perfect!!");
-                            hit.setTextFill(Color.BLUE);
-                        } else if (node2.getTranslateY() > 670 && node2.getTranslateY() < 690 || node2.getTranslateY() < 630 && node2.getTranslateY() > 610) {
-                            score += 50;
-                            hit.setText("Great!");
-                            hit.setTextFill(Color.GREEN);
-                        } else {
-                            hit.setText("Fail!");
-                            hit.setTextFill(Color.RED);
-                        }
-                        break;
-                    case "RIGHT]":
-                        right.setOpacity(1);
-                        rightkey = 0;
-                        node2.setVisible(false);
-                        if (node2.getTranslateY() < 670 && node2.getTranslateY() > 630) {
-                            score += 100;
-                            hit.setText("Perfect!!");
-                            hit.setTextFill(Color.BLUE);
-                        } else if (node2.getTranslateY() > 670 && node2.getTranslateY() < 690 || node2.getTranslateY() < 630 && node2.getTranslateY() > 610) {
-                            score += 50;
-                            hit.setText("Great!");
-                            hit.setTextFill(Color.GREEN);
-                        } else {
-                            hit.setText("Fail!");
-                            hit.setTextFill(Color.RED);
-                        }
-                        break;
-                    case "UP]":
-                        up.setOpacity(1);
-                        upkey = 0;
-                        node2.setVisible(false);
-                        if (node2.getTranslateY() < 670 && node2.getTranslateY() > 630) {
-                            score += 100;
-                            hit.setText("Perfect!!");
-                            hit.setTextFill(Color.BLUE);
-                        } else if (node2.getTranslateY() > 670 && node2.getTranslateY() < 690 || node2.getTranslateY() < 630 && node2.getTranslateY() > 610) {
-                            score += 50;
-                            hit.setText("Great!");
-                            hit.setTextFill(Color.GREEN);
-                        } else {
-                            hit.setText("Fail!");
-                            hit.setTextFill(Color.RED);
-                        }
-                        //System.out.println(event.toString().substring(181));
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        });
+        //key_detection();
     }
 
     private void beat_detect() {
@@ -139,11 +87,7 @@ public class GamepageController {
                         public void run() {
                             // TODO Auto-generated method stub
                             test = test + 0.001;
-                            if (1 != compare(Double.parseDouble(df.format(test)), Double.parseDouble(df.format(two))) && -1 != compare(Double.parseDouble(df.format(test)), Double.parseDouble(df.format(two)))) {
-                                //System.out.println(test);
-                                start = true;
-                            }
-                            //System.out.println(test);
+
                             //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
                             //System.out.println(beat.getShowtime());
                             if (1 == compare(Double.parseDouble(df.format(test)), beat.getShowtime().get(index))) {
@@ -186,8 +130,11 @@ public class GamepageController {
                             }
                         }
                     }, 0, 1);
-                    Thread t1 = new Thread(r1);
-                    t1.start();
+                    Thread.sleep(2000);
+                    playmp3();
+                    stoptempo.setOnAction(e -> {
+                        timer.cancel();
+                    });
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -197,60 +144,75 @@ public class GamepageController {
         });
         t.start();
     }
-    private Runnable r1 = new Runnable() {
-        public void run() {
-            try {
-                Thread.sleep(2000);
-                playmp3();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-    };
 
     private void newleftnode() {
+        DecimalFormat df = new DecimalFormat("##.000");
+
         ImageView leftnode = new ImageView(nodeview);
         leftnode.setTranslateX(-298);
         leftnode.setTranslateY(-500);
         scene.getChildren().add(leftnode);
-
-      /*  Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            int count = -500;
-
-            @Override
-            public void run() {
-                count++;
-                leftnode.setTranslateY(count);
-                if (count > 500) {
-                    System.out.println("end");
-                    //  scene.getChildren().remove(leftnode);
-                    //  leftnode.setVisible(false);
-                    leftnode.setVisible(false);
-                    timer.cancel();
-                }
-            }
-        }, 0, 2);*/
-       TranslateTransition move = new TranslateTransition(Duration.millis(3000), leftnode);
+        TranslateTransition move = new TranslateTransition(Duration.millis(3000), leftnode);
         move.setByY(1050);
         move.play();
-       // System.out.println(leftnode.getTranslateY());
-        move.setOnFinished(e -> {
-            leftnode.setVisible(false);
+        move.setOnFinished(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                scene.getChildren().remove(leftnode);
+            }
+        }
+        );
+
+        BooleanBinding hit = Bindings.createBooleanBinding(() -> {
+            System.out.println(leftnode.translateYProperty().getValue());
+            return (true);
+        }, leftnode.translateXProperty(), leftnode.translateYProperty());
+
+        hit.addListener((obs, wasHit, isNowHit) -> {
         });
+        scene.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.LEFT) {
+                System.out.println("LEFT");
+                left.setOpacity(1);
+                leftkey = 0;
+                /*Double test = leftnode.translateYProperty().getValue();
+                if (true) {
+                    System.out.println(Double.parseDouble(df.format(test)));
+                }*/
+            }
+        });
+
     }
 
     private void newmidnode() {
         ImageView midnode = new ImageView(nodeview);
+
         midnode.setTranslateY(-500);
         scene.getChildren().add(midnode);
         TranslateTransition move = new TranslateTransition(Duration.millis(3000), midnode);
         move.setByY(1050);
         move.play();
-        move.setOnFinished(e -> {
-            midnode.setVisible(false);
+        move.setOnFinished(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                scene.getChildren().remove(midnode);
+            }
+        }
+        );
+
+        BooleanBinding hit = Bindings.createBooleanBinding(() -> {
+            scene.setOnKeyPressed(e -> {
+                if (e.getCode() == KeyCode.UP) {
+                    System.out.println("UP");
+                    up.setOpacity(1);
+                    upkey = 0;
+                }
+            });
+            //System.out.println(midnode.translateYProperty().getValue());
+            return (true);
+        }, midnode.translateXProperty(), midnode.translateYProperty());
+
+        hit.addListener((obs, wasHit, isNowHit) -> {
         });
+
     }
 
     private void newrightnode() {
@@ -261,14 +223,123 @@ public class GamepageController {
         TranslateTransition move = new TranslateTransition(Duration.millis(3000), rightnode);
         move.setByY(1050);
         move.play();
-        move.setOnFinished(e -> {
-            rightnode.setVisible(false);
+        move.setOnFinished(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                scene.getChildren().remove(rightnode);
+            }
+        }
+        );
+
+        BooleanBinding hit = Bindings.createBooleanBinding(() -> {
+            scene.setOnKeyPressed(e -> {
+                if (e.getCode() == KeyCode.RIGHT) {
+                    System.out.println("RIGHT");
+                    right.setOpacity(1);
+                    rightkey = 0;
+                }
+            });
+            //System.out.println(rightnode.translateYProperty().getValue());
+            return (true);
+        }, rightnode.translateXProperty(), rightnode.translateYProperty());
+
+        hit.addListener((obs, wasHit, isNowHit) -> {
         });
+
+    }
+
+    private void key_detection() {
+        scene.setOnKeyPressed((Event event) -> {
+            if (event.toString().substring(181) != null) {
+                switch (event.toString().substring(181)) {
+                    case "LEFT]":
+                        left.setOpacity(1);
+                        leftkey = 0;
+                        hit.setText("Perfect!!");
+
+                        break;
+                    case "RIGHT]":
+                        right.setOpacity(1);
+                        rightkey = 0;
+                        hit.setText("Great!");
+                        break;
+                    case "UP]":
+                        up.setOpacity(1);
+                        upkey = 0;
+                        hit.setText("Fail!");
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
+            /*if (event.toString().substring(181) != null) {
+                switch (event.toString().substring(181)) {
+                    case "LEFT]":
+                        left.setOpacity(1);
+                        leftkey = 0;
+                        node2.setVisible(false);
+                        if (move.getFromY()< 670 && move.getFromY() > 630) {
+                            score += 100;
+                            hit.setText("Perfect!!");
+                            hit.setTextFill(Color.BLUE);
+                        } else if (move.getFromY() > 670 && move.getFromY() < 690 || move.getFromY() < 630 && move.getFromY() > 610) {
+                            score += 50;
+                            hit.setText("Great!");
+                            hit.setTextFill(Color.GREEN);
+                        } else {
+                            hit.setText("Fail!");
+                            hit.setTextFill(Color.RED);
+                        }
+                        break;
+                    case "RIGHT]":
+                        right.setOpacity(1);
+                        rightkey = 0;
+                        node2.setVisible(false);
+                        if (move.getFromY() < 670 && move.getFromY() > 630) {
+                            score += 100;
+                            hit.setText("Perfect!!");
+                            hit.setTextFill(Color.BLUE);
+                        } else if (move.getFromY() > 670 && move.getFromY() < 690 || move.getFromY() < 630 && move.getFromY() > 610) {
+                            score += 50;
+                            hit.setText("Great!");
+                            hit.setTextFill(Color.GREEN);
+                        } else {
+                            hit.setText("Fail!");
+                            hit.setTextFill(Color.RED);
+                        }
+                        break;
+                    case "UP]":
+                        up.setOpacity(1);
+                        upkey = 0;
+                        node2.setVisible(false);
+                        if (move.getFromY() < 670 && move.getFromY() > 630) {
+                            score += 100;
+                            hit.setText("Perfect!!");
+                            hit.setTextFill(Color.BLUE);
+                        } else if (move.getFromY() > 670 && move.getFromY() < 690 || move.getFromY() < 630 && move.getFromY() > 610) {
+                            score += 50;
+                            hit.setText("Great!");
+                            hit.setTextFill(Color.GREEN);
+                        } else {
+                            hit.setText("Fail!");
+                            hit.setTextFill(Color.RED);
+                        }
+                        //System.out.println(event.toString().substring(181));
+                        break;
+                    default:
+                        break;
+                }
+
+            }*/
+        }
+        );
     }
 
     private void pitch_detect() {
         PitchAnalysis pitch = new PitchAnalysis();
         DecimalFormat df = new DecimalFormat("##.000");
+
         Thread t;
         t = new Thread(new Runnable() {
 
@@ -277,50 +348,71 @@ public class GamepageController {
                 try {
                     System.out.println(songselect + "~~~~~");
                     pitch.getpitch(songselect);
-                    pane.setExpanded(false);
-                    playmp3();
+                    pane.setVisible(false);
 
                     Timer timer = new Timer();
                     timer.scheduleAtFixedRate(new TimerTask() {
                         int index = 1;
-                        Double test = 0.0;
+                        Double test = new Double("0.0");
+                        Double two = new Double("2.110");
 
                         @Override
                         public void run() {
                             // TODO Auto-generated method stub
                             test = test + 0.001;
+
                             //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
-                            System.out.println(pitch.getShowtime().get(index));
-                            /*if (1 == compare(Double.parseDouble(df.format(test)), pitch.getShowtime().get(index))) {
+                            //System.out.println(beat.getShowtime());
+                            if (1 == compare(Double.parseDouble(df.format(test)), pitch.getShowtime().get(index))) {
                                 if (pitch.getShowornot().get(index) == 1) {
-                                    System.out.println(pitch.getShowtime().get(index));
-                                    node2.setVisible(true);
+                                    //System.out.println(beat.getShowtime().get(index));
+                                    Platform.runLater(() -> {
+                                        if (pitch.getShowtime().get(index) * 1000 % 3 == 1) {
+                                            newmidnode();
+                                        }
+                                        if (pitch.getShowtime().get(index) * 1000 % 3 == 2) {
+                                            newleftnode();
+                                        }
+                                        if (pitch.getShowtime().get(index) * 1000 % 3 == 0) {
+                                            newrightnode();
+                                        }
+                                        node2.setVisible(true);
+                                    });
                                     index++;
                                 } else {
-                                    node2.setVisible(false);
+                                    Platform.runLater(() -> {
+                                        node2.setVisible(false);
+                                    });
                                     index++;
                                 }
                             }
                             if (index == pitch.getShowtime().size()) {
                                 this.cancel();
                             }
-                            rightkey++;
                             leftkey++;
                             upkey++;
-                            if (upkey == 85) {
-                                up.setOpacity(0.5);
+                            rightkey++;
+                            if (leftkey == 85) {
+                                left.setOpacity(0.5);
                             }
                             if (rightkey == 85) {
                                 right.setOpacity(0.5);
                             }
-                            if (leftkey == 85) {
-                                left.setOpacity(0.5);
-                            }*/
+                            if (upkey == 85) {
+                                up.setOpacity(0.5);
+                            }
                         }
                     }, 0, 1);
+                    Thread.sleep(2000);
+                    playmp3();
+                    stoptempo.setOnAction(e -> {
+                        timer.cancel();
+                    });
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+
             }
         });
         t.start();
