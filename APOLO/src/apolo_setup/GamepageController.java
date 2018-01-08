@@ -31,6 +31,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
@@ -55,6 +56,7 @@ public class GamepageController {
     private GridPane song;
     int score = 0;
     int leftkey = 0, upkey = 0, rightkey = 0;
+    int tempindex = 1;
     Boolean start = false;
     Image nodeview = new Image("/images/start.png");
 
@@ -86,15 +88,116 @@ public class GamepageController {
                         public void run() {
                             // TODO Auto-generated method stub
                             test = test + 0.001;
+                            if (test > beat.getShowtime().get(index - tempindex) + 2.155) {
+                                tempindex--;
+                            }
+                            scene.setOnKeyPressed(e -> {
+                                if (e.getCode() == KeyCode.RIGHT) {
+                                    //  System.out.println("RIGHT");
+                                    right.setOpacity(1);
+                                    rightkey = 0;
+                                    // System.out.println("right");
+
+                                    System.out.println(tempindex);
+                                    System.out.println(beat.getShowtime().get(index - tempindex) + 2.149);
+                                    System.out.println(test);
+                                    if (test < beat.getShowtime().get(index - tempindex) + 2.149 + 0.2 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 0.4) {
+                                        score += 100;
+                                        scoreshow.setText(String.valueOf(score));
+                                        hit.setText("Perfect!");
+                                        hit.setTextFill(Color.BLUE);
+                                        tempindex--;
+                                    }
+                                    if (test > beat.getShowtime().get(index - tempindex) + 0.2 && test < beat.getShowtime().get(index - tempindex) + 1
+                                            || test < beat.getShowtime().get(index - tempindex) + 2.149 - 0.4 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 1) {
+                                        score += 50;
+                                        scoreshow.setText(String.valueOf(score));
+                                        hit.setText("Great!");
+                                        hit.setTextFill(Color.GREEN);
+                                        tempindex--;
+                                    }
+                                    if (test > beat.getShowtime().get(index - tempindex) + 2.149 + 1
+                                            || test < beat.getShowtime().get(index - tempindex) + 2.149 - 1 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 2) {
+                                        hit.setText("Fail!");
+                                        hit.setTextFill(Color.RED);
+
+                                    }
+                                }
+                                if (e.getCode() == KeyCode.LEFT) {
+                                    // System.out.println("RIGHT");
+                                    left.setOpacity(1);
+                                    leftkey = 0;
+                                    // System.out.println("left");
+                                    // System.out.println(beat.getShowtime().get(index));
+                                    System.out.println(tempindex);
+                                    System.out.println(beat.getShowtime().get(index - tempindex) + 2.149);
+                                    System.out.println(test);
+                                    if (test < beat.getShowtime().get(index - tempindex) + 2.149 + 0.2 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 0.4) {
+                                        score += 100;
+                                        scoreshow.setText(String.valueOf(score));
+                                        hit.setText("Perfect!");
+                                        hit.setTextFill(Color.BLUE);
+                                        tempindex--;
+                                    }
+                                    if (test > beat.getShowtime().get(index - tempindex) + 0.2 && test < beat.getShowtime().get(index - tempindex) + 1
+                                            || test < beat.getShowtime().get(index - tempindex) + 2.149 - 0.4 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 1) {
+                                        score += 50;
+                                        scoreshow.setText(String.valueOf(score));
+                                        hit.setText("Great!");
+                                        hit.setTextFill(Color.GREEN);
+                                        tempindex--;
+                                    }
+                                    if (test > beat.getShowtime().get(index - tempindex) + 2.149 + 1 
+                                            || test < beat.getShowtime().get(index - tempindex) + 2.149 - 1 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 2) {
+                                        hit.setText("Fail");
+                                        hit.setTextFill(Color.RED);
+                                    }
+                                    // System.out.println(test);
+
+                                }
+                                if (e.getCode() == KeyCode.UP) {
+                                    //System.out.println("RIGHT");
+                                    up.setOpacity(1);
+                                    upkey = 0;
+                                    //  System.out.println(beat.getShowtime().get(index ));
+                                    System.out.println(tempindex);
+                                    System.out.println(beat.getShowtime().get(index - tempindex) + 2.149);
+                                    System.out.println(test);
+                                    if (test < beat.getShowtime().get(index - tempindex) + 2.149 + 0.2 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 0.4) {
+                                        score += 100;
+                                        scoreshow.setText(String.valueOf(score));
+                                        hit.setText("Perfect!");
+                                        hit.setTextFill(Color.BLUE);
+                                        tempindex--;
+                                    }
+                                    if (test > beat.getShowtime().get(index - tempindex) + 0.2 && test < beat.getShowtime().get(index - tempindex) + 1
+                                            || test < beat.getShowtime().get(index - tempindex) + 2.149 - 0.4 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 1) {
+                                        score += 50;
+                                        scoreshow.setText(String.valueOf(score));
+                                        hit.setText("Great!");
+                                        hit.setTextFill(Color.GREEN);
+                                        tempindex--;
+                                    }
+                                    if (test > beat.getShowtime().get(index - tempindex) + 2.149 + 1 
+                                            || test < beat.getShowtime().get(index - tempindex) + 2.149 - 1 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 2) {
+                                        hit.setText("Fail");
+                                        hit.setTextFill(Color.RED);
+                                    }
+                                    // System.out.println("mid");
+                                    // System.out.println(test);
+                                }
+
+                            });
 
                             //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
                             //System.out.println(beat.getShowtime());
                             if (1 == compare(Double.parseDouble(df.format(test)), beat.getShowtime().get(index))) {
                                 if (beat.getShowornot().get(index) > Float.parseFloat(df.format(beat.getAverageEnergy()))) {
-                                    //System.out.println(beat.getShowtime().get(index));
+                                    //     System.out.println(beat.getShowtime().get(index));
                                     Platform.runLater(() -> {
                                         if (beat.getShowtime().get(index) * 1000 % 3 == 1) {
                                             newmidnode();
+
                                         }
                                         if (beat.getShowtime().get(index) * 1000 % 3 == 2) {
                                             newleftnode();
@@ -105,11 +208,13 @@ public class GamepageController {
                                         node2.setVisible(true);
                                     });
                                     index++;
+                                    tempindex++;
                                 } else {
                                     Platform.runLater(() -> {
                                         node2.setVisible(false);
                                     });
                                     index++;
+                                    tempindex++;
                                 }
                             }
                             if (index == beat.getShowtime().size()) {
@@ -128,19 +233,24 @@ public class GamepageController {
                                 up.setOpacity(0.5);
                             }
                         }
-                    }, 0, 1);
-                    Thread.sleep(2000);
+                    },
+                            0, 1);
+                    Thread.sleep(
+                            2000);
                     playmp3();
-                    stoptempo.setOnAction(e -> {
-                        timer.cancel();
-                    });
 
+                    stoptempo.setOnAction(e
+                            -> {
+                        timer.cancel();
+                    }
+                    );
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
 
             }
-        });
+        }
+        );
         t.start();
     }
 
@@ -151,12 +261,13 @@ public class GamepageController {
         leftnode.setTranslateX(-298);
         leftnode.setTranslateY(-500);
         scene.getChildren().add(leftnode);
-        TranslateTransition move = new TranslateTransition(Duration.millis(3000), leftnode);
-        move.setByY(1050);
+        TranslateTransition move = new TranslateTransition(Duration.millis(2149), leftnode);
+        move.setByY(750);
         move.play();
         move.setOnFinished(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 scene.getChildren().remove(leftnode);
+
             }
         }
         );
@@ -167,12 +278,13 @@ public class GamepageController {
 
         midnode.setTranslateY(-500);
         scene.getChildren().add(midnode);
-        TranslateTransition move = new TranslateTransition(Duration.millis(3000), midnode);
-        move.setByY(1050);
+        TranslateTransition move = new TranslateTransition(Duration.millis(2149), midnode);
+        move.setByY(750);
         move.play();
         move.setOnFinished(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 scene.getChildren().remove(midnode);
+
             }
         }
         );
@@ -183,12 +295,13 @@ public class GamepageController {
         rightnode.setTranslateX(298);
         rightnode.setTranslateY(-500);
         scene.getChildren().add(rightnode);
-        TranslateTransition move = new TranslateTransition(Duration.millis(3000), rightnode);
-        move.setByY(1050);
+        TranslateTransition move = new TranslateTransition(Duration.millis(2149), rightnode);
+        move.setByY(750);
         move.play();
         move.setOnFinished(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 scene.getChildren().remove(rightnode);
+
             }
         }
         );

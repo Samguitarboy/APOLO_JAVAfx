@@ -27,7 +27,7 @@
          <children>
             <Label fx:id="scoreshow" prefHeight="32.0" prefWidth="138.0" StackPane.alignment="TOP_RIGHT">
                <StackPane.margin>
-                  <Insets right="5.0" top="150.0" />
+                  <Insets right="5.0" top="200.0" />
                </StackPane.margin>
                <font>
                   <Font size="19.0" />
