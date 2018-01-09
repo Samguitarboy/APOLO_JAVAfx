@@ -14,14 +14,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
@@ -29,6 +27,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -42,7 +41,7 @@ public class GamepageController {
     @FXML
     private ScrollPane scroll;
     @FXML
-    private Label scoreshow, hit;
+    private Label scoreshow, hit, scorenum, name;
     @FXML
     private JFXButton stop, stoptempo;
     @FXML
@@ -51,6 +50,8 @@ public class GamepageController {
     private ImageView left, up, right;
     @FXML
     private VBox song;
+    @FXML
+    private Pane cover;
 
     int score = 0;
     int leftkey = 0, upkey = 0, rightkey = 0;
@@ -80,7 +81,7 @@ public class GamepageController {
                     System.out.println(songselect + "~~~~~");
                     beat.getbeat(songselect);
                     pane.setVisible(false);
-
+                    key_detect();
                     Timer timer = new Timer();
                     timer.scheduleAtFixedRate(new TimerTask() {
                         int index = 1;
@@ -98,16 +99,17 @@ public class GamepageController {
                                     //     System.out.println(beat.getShowtime().get(index));
                                     Platform.runLater(() -> {
                                         if (beat.getShowtime().get(index) * 1000 % 3 == 1) {
+
                                             newmidnode();
-                                            midpoint.add(beat.getShowtime().get(index));
+                                            //System.out.println("Hi~"+beat.getShowtime().get(index));
                                         }
                                         if (beat.getShowtime().get(index) * 1000 % 3 == 2) {
                                             newleftnode();
-                                            leftpoint.add(beat.getShowtime().get(index));
+
                                         }
                                         if (beat.getShowtime().get(index) * 1000 % 3 == 0) {
                                             newrightnode();
-                                            rightpoint.add(beat.getShowtime().get(index));
+
                                         }
 
                                     });
@@ -125,7 +127,7 @@ public class GamepageController {
                         }
                     }, 0, 1);
                     Thread.sleep(2000);
-                    key_detect();
+
                     playmp3();
                     stoptempo.setOnAction(e
                             -> {
@@ -165,24 +167,28 @@ public class GamepageController {
                             // TODO Auto-generated method stub
                             test = test + 0.001;
                             System.out.println(test);
-                            if (0 == compare(Double.parseDouble(df.format(test)), rightpoint.get(right_index) + two)) {
+                            /*if (0 == compare(Double.parseDouble(df.format(test)), rightpoint.get(right_index) + two)) {
                                 right_index++;
-                            }
+                            }*/
 
                             scene.setOnKeyPressed(e -> {
                                 if (e.getCode() == KeyCode.RIGHT) {
                                     //  System.out.println("RIGHT");
                                     right.setOpacity(1);
                                     rightkey = 0;
-                                    if (0 == compare(Double.parseDouble(df.format(test)), rightpoint.get(right_index) + two)) {
+                                    score += 1;
+                                    scoreshow.setText(String.valueOf(score));
+                                    hit.setText("Perfect!");
+                                    hit.setTextFill(Color.BLUE);
+                                    /*if (0 == compare(Double.parseDouble(df.format(test)), rightpoint.get(right_index) + two)) {
                                         score += 100;
                                         scoreshow.setText(String.valueOf(score));
                                         hit.setText("Perfect!");
                                         hit.setTextFill(Color.BLUE);
-                                    }
+                                    }*/
 
 
-                                    /*
+ /*
                                     System.out.println(tempindex);
                                     System.out.println(beat.getShowtime().get(index - tempindex) + 2.149);
                                     System.out.println(test);
@@ -214,6 +220,11 @@ public class GamepageController {
                                     // System.out.println("RIGHT");
                                     left.setOpacity(1);
                                     leftkey = 0;
+                                    score += 1;
+                                    scoreshow.setText(String.valueOf(score));
+                                    hit.setText("Great!");
+                                    hit.setTextFill(Color.GREEN);
+
                                     // System.out.println("left");
                                     // System.out.println(beat.getShowtime().get(index));
                                     /* System.out.println(tempindex);
@@ -246,6 +257,8 @@ public class GamepageController {
                                     //System.out.println("RIGHT");
                                     up.setOpacity(1);
                                     upkey = 0;
+                                    hit.setText("Fail!");
+                                    hit.setTextFill(Color.RED);
                                     //  System.out.println(beat.getShowtime().get(index ));
                                     /*System.out.println(tempindex);
                                     System.out.println(beat.getShowtime().get(index - tempindex) + 2.149);
@@ -457,6 +470,27 @@ public class GamepageController {
     }
 
     private void songDB() {
+        config con = new config();
+        String connectionStr = "jdbc:mysql://" + con.getUrlstr() + "/" + con.getDBName() + "?user=" + con.getUserstr() + "&password=" + con.getPw();
+        String songnum = "select count(*) from Songlist";
+        String songtitles = "select Song_Title from Songlist";
+
+        MySQLConnector MSC = new MySQLConnector();
+        MSC.connectDB(connectionStr);
+        //Song_number
+        MSC.doquery(songnum);
+        int count = Integer.valueOf(MSC.getResult().toString().trim());
+        MSC.clearresult();
+        //Song_title
+        MSC.doquery(songtitles);
+        for (int i = 0; i < count; i++) {
+            songlist(MSC.getResult().toString().split("\n")[i], i);
+        }
+        MSC.closeconnection();
+        pane.setContent(song);
+    }
+
+    private void recordDB() {
         config con = new config();
         String connectionStr = "jdbc:mysql://" + con.getUrlstr() + "/" + con.getDBName() + "?user=" + con.getUserstr() + "&password=" + con.getPw();
         String songnum = "select count(*) from Songlist";
