@@ -59,10 +59,7 @@ public class GamepageController {
     Boolean start = false;
     Image nodeview = new Image("/images/start.png");
     BeatAnalysis beat = new BeatAnalysis();
-
-    private ArrayList<Double> midpoint = new ArrayList<Double>();
-    private ArrayList<Double> rightpoint = new ArrayList<Double>();
-    private ArrayList<Double> leftpoint = new ArrayList<Double>();
+    LoginController login = new LoginController();
 
     public void initialize() {
         songDB();
@@ -81,7 +78,7 @@ public class GamepageController {
                     System.out.println(songselect + "~~~~~");
                     beat.getbeat(songselect);
                     pane.setVisible(false);
-                    key_detect();
+
                     Timer timer = new Timer();
                     timer.scheduleAtFixedRate(new TimerTask() {
                         int index = 1;
@@ -91,86 +88,6 @@ public class GamepageController {
                         public void run() {
                             // TODO Auto-generated method stub
                             test = test + 0.001;
-
-                            //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
-                            //System.out.println(beat.getShowtime());
-                            if (1 == compare(Double.parseDouble(df.format(test)), beat.getShowtime().get(index))) {
-                                if (beat.getShowornot().get(index) > Float.parseFloat(df.format(beat.getAverageEnergy()))) {
-                                    //     System.out.println(beat.getShowtime().get(index));
-                                    Platform.runLater(() -> {
-                                        if (beat.getShowtime().get(index) * 1000 % 3 == 1) {
-
-                                            newmidnode();
-                                            //System.out.println("Hi~"+beat.getShowtime().get(index));
-                                        }
-                                        if (beat.getShowtime().get(index) * 1000 % 3 == 2) {
-                                            newleftnode();
-
-                                        }
-                                        if (beat.getShowtime().get(index) * 1000 % 3 == 0) {
-                                            newrightnode();
-
-                                        }
-
-                                    });
-                                    index++;
-                                    tempindex++;
-                                } else {
-
-                                    index++;
-                                    tempindex++;
-                                }
-                            }
-                            if (index == beat.getShowtime().size()) {
-                                this.cancel();
-                            }
-                        }
-                    }, 0, 1);
-                    Thread.sleep(2000);
-
-                    playmp3();
-                    stoptempo.setOnAction(e
-                            -> {
-                        timer.cancel();
-                    }
-                    );
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-            }
-        }
-        );
-        t.start();
-    }
-
-    private void key_detect() {
-
-        DecimalFormat df = new DecimalFormat("##.000");
-
-        Thread t;
-        t = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    Timer timer = new Timer();
-                    timer.scheduleAtFixedRate(new TimerTask() {
-                        int mid_index = 1;
-                        int left_index = 1;
-                        int right_index = 1;
-                        Double test = new Double("0.0");
-                        Double two = new Double("2.110");
-
-                        @Override
-                        public void run() {
-                            // TODO Auto-generated method stub
-                            test = test + 0.001;
-                            System.out.println(test);
-                            /*if (0 == compare(Double.parseDouble(df.format(test)), rightpoint.get(right_index) + two)) {
-                                right_index++;
-                            }*/
-
                             scene.setOnKeyPressed(e -> {
                                 if (e.getCode() == KeyCode.RIGHT) {
                                     //  System.out.println("RIGHT");
@@ -301,9 +218,52 @@ public class GamepageController {
                             if (upkey == 85) {
                                 up.setOpacity(0.5);
                             }
+                            //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
+                            //System.out.println(beat.getShowtime());
+                            if (1 == compare(Double.parseDouble(df.format(test)), beat.getShowtime().get(index))) {
+                                if (beat.getShowornot().get(index) > Float.parseFloat(df.format(beat.getAverageEnergy()))) {
+                                    //     System.out.println(beat.getShowtime().get(index));
+                                    Platform.runLater(() -> {
+                                        if (beat.getShowtime().get(index) * 1000 % 3 == 1) {
+
+                                            newmidnode();
+                                            //System.out.println("Hi~"+beat.getShowtime().get(index));
+                                        }
+                                        if (beat.getShowtime().get(index) * 1000 % 3 == 2) {
+                                            newleftnode();
+
+                                        }
+                                        if (beat.getShowtime().get(index) * 1000 % 3 == 0) {
+                                            newrightnode();
+
+                                        }
+
+                                    });
+                                    index++;
+                                    tempindex++;
+                                } else {
+
+                                    index++;
+                                    tempindex++;
+                                }
+                            }
+                            if (index == beat.getShowtime().size()) {
+                                this.cancel();
+                                if (login.username != "") {
+                                    showrecord();
+                                    recordDB();
+                                }
+                            }
                         }
                     }, 0, 1);
+                    Thread.sleep(2000);
+                    playmp3();
 
+                    stoptempo.setOnAction(e
+                            -> {
+                        timer.cancel();
+                    }
+                    );
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -418,6 +378,8 @@ public class GamepageController {
                             }
                             if (index == pitch.getShowtime().size()) {
                                 this.cancel();
+                                showrecord();
+                                recordDB();
                             }
                             leftkey++;
                             upkey++;
@@ -435,6 +397,8 @@ public class GamepageController {
                     }, 0, 1);
                     Thread.sleep(2000);
                     playmp3();
+                    showrecord();
+                    recordDB();
                     stoptempo.setOnAction(e -> {
                         timer.cancel();
                     });
@@ -453,6 +417,7 @@ public class GamepageController {
         Thread t = new Thread(producer);
         //t.setDaemon(true);
         t.start();
+
         stop.setOnAction(e -> {
             t.stop();
         });
@@ -466,6 +431,18 @@ public class GamepageController {
         Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         app_stage.setScene(main_page_scene);
         app_stage.show();
+
+    }
+
+    private void showrecord() {
+        cover.setDisable(false);
+        cover.setVisible(true);
+        name.setText(login.username);
+        scorenum.setText(Integer.toString(score));
+        scorenum.setDisable(false);
+        scorenum.setVisible(true);
+        name.setDisable(false);
+        name.setVisible(true);
 
     }
 
@@ -493,22 +470,11 @@ public class GamepageController {
     private void recordDB() {
         config con = new config();
         String connectionStr = "jdbc:mysql://" + con.getUrlstr() + "/" + con.getDBName() + "?user=" + con.getUserstr() + "&password=" + con.getPw();
-        String songnum = "select count(*) from Songlist";
-        String songtitles = "select Song_Title from Songlist";
+        String insertrecord = "insert into playrecord values(N'" + login.username + "'," + score + ",CURRENT_DATE,null);";
+        MySQLConnector MSC_insert = new MySQLConnector();
+        MSC_insert.connectDB(connectionStr);
 
-        MySQLConnector MSC = new MySQLConnector();
-        MSC.connectDB(connectionStr);
-        //Song_number
-        MSC.doquery(songnum);
-        int count = Integer.valueOf(MSC.getResult().toString().trim());
-        MSC.clearresult();
-        //Song_title
-        MSC.doquery(songtitles);
-        for (int i = 0; i < count; i++) {
-            songlist(MSC.getResult().toString().split("\n")[i], i);
-        }
-        MSC.closeconnection();
-        pane.setContent(song);
+        MSC_insert.doInsert(insertrecord);
     }
 
     public void songlist(String result, int i) {
@@ -590,6 +556,7 @@ public class GamepageController {
         public void run() {
             try {
                 ConvertMP32PCM.playMP3("songlist\\" + play_song + ".mp3");
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
