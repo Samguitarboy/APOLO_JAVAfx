@@ -55,6 +55,8 @@ public class MainpageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        String UserName="";
+        
     }
 
 }

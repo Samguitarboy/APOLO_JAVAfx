@@ -86,7 +86,6 @@ public class MySQLConnector {
             }
             //System.out.println();
             result.append("\n");*/
-            
             //print out detail
             while (rs.next()) {
                 for (int i = 1; i <= numCol; i++) {
@@ -99,6 +98,23 @@ public class MySQLConnector {
 
         } catch (SQLException sqlex) {
             System.out.println("QueryError");
+            sqlex.printStackTrace();
+        }
+
+    }
+
+    public void doDelete(String SQLStr) {
+
+        try {
+            stmt = conn.createStatement();
+            if (stmt.executeUpdate(SQLStr) == 1) {
+                System.out.println("Delete Success !");
+            } else {
+                System.out.println("Delete Fail !");
+            }
+
+        } catch (SQLException sqlex) {
+            System.out.println("DeleteError");
             sqlex.printStackTrace();
         }
 

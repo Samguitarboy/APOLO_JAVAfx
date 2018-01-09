@@ -10,40 +10,36 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.text.DecimalFormat;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 public class GamepageController {
 
     private String songselect = "";
-    @FXML
-    private Circle node2;
-    @FXML
-    private Pane root;
+
     @FXML
     private StackPane scene;
+    @FXML
+    private ScrollPane scroll;
     @FXML
     private Label scoreshow, hit;
     @FXML
@@ -53,7 +49,8 @@ public class GamepageController {
     @FXML
     private ImageView left, up, right;
     @FXML
-    private GridPane song;
+    private VBox song;
+
     int score = 0;
     int leftkey = 0, upkey = 0, rightkey = 0;
     int tempindex = 1;
@@ -147,7 +144,7 @@ public class GamepageController {
                                         hit.setTextFill(Color.GREEN);
                                         tempindex--;
                                     }
-                                    if (test > beat.getShowtime().get(index - tempindex) + 2.149 + 1 
+                                    if (test > beat.getShowtime().get(index - tempindex) + 2.149 + 1
                                             || test < beat.getShowtime().get(index - tempindex) + 2.149 - 1 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 2) {
                                         hit.setText("Fail");
                                         hit.setTextFill(Color.RED);
@@ -178,7 +175,7 @@ public class GamepageController {
                                         hit.setTextFill(Color.GREEN);
                                         tempindex--;
                                     }
-                                    if (test > beat.getShowtime().get(index - tempindex) + 2.149 + 1 
+                                    if (test > beat.getShowtime().get(index - tempindex) + 2.149 + 1
                                             || test < beat.getShowtime().get(index - tempindex) + 2.149 - 1 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 2) {
                                         hit.setText("Fail");
                                         hit.setTextFill(Color.RED);
@@ -205,13 +202,13 @@ public class GamepageController {
                                         if (beat.getShowtime().get(index) * 1000 % 3 == 0) {
                                             newrightnode();
                                         }
-                                        node2.setVisible(true);
+                                        //node2.setVisible(true);
                                     });
                                     index++;
                                     tempindex++;
                                 } else {
                                     Platform.runLater(() -> {
-                                        node2.setVisible(false);
+                                        //node2.setVisible(false);
                                     });
                                     index++;
                                     tempindex++;
@@ -307,95 +304,6 @@ public class GamepageController {
         );
     }
 
-    private void key_detection() {
-        scene.setOnKeyPressed((Event event) -> {
-            if (event.toString().substring(181) != null) {
-                switch (event.toString().substring(181)) {
-                    case "LEFT]":
-                        left.setOpacity(1);
-                        leftkey = 0;
-                        hit.setText("Perfect!!");
-
-                        break;
-                    case "RIGHT]":
-                        right.setOpacity(1);
-                        rightkey = 0;
-                        hit.setText("Great!");
-                        break;
-                    case "UP]":
-                        up.setOpacity(1);
-                        upkey = 0;
-                        hit.setText("Fail!");
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-
-            /*if (event.toString().substring(181) != null) {
-                switch (event.toString().substring(181)) {
-                    case "LEFT]":
-                        left.setOpacity(1);
-                        leftkey = 0;
-                        node2.setVisible(false);
-                        if (move.getFromY()< 670 && move.getFromY() > 630) {
-                            score += 100;
-                            hit.setText("Perfect!!");
-                            hit.setTextFill(Color.BLUE);
-                        } else if (move.getFromY() > 670 && move.getFromY() < 690 || move.getFromY() < 630 && move.getFromY() > 610) {
-                            score += 50;
-                            hit.setText("Great!");
-                            hit.setTextFill(Color.GREEN);
-                        } else {
-                            hit.setText("Fail!");
-                            hit.setTextFill(Color.RED);
-                        }
-                        break;
-                    case "RIGHT]":
-                        right.setOpacity(1);
-                        rightkey = 0;
-                        node2.setVisible(false);
-                        if (move.getFromY() < 670 && move.getFromY() > 630) {
-                            score += 100;
-                            hit.setText("Perfect!!");
-                            hit.setTextFill(Color.BLUE);
-                        } else if (move.getFromY() > 670 && move.getFromY() < 690 || move.getFromY() < 630 && move.getFromY() > 610) {
-                            score += 50;
-                            hit.setText("Great!");
-                            hit.setTextFill(Color.GREEN);
-                        } else {
-                            hit.setText("Fail!");
-                            hit.setTextFill(Color.RED);
-                        }
-                        break;
-                    case "UP]":
-                        up.setOpacity(1);
-                        upkey = 0;
-                        node2.setVisible(false);
-                        if (move.getFromY() < 670 && move.getFromY() > 630) {
-                            score += 100;
-                            hit.setText("Perfect!!");
-                            hit.setTextFill(Color.BLUE);
-                        } else if (move.getFromY() > 670 && move.getFromY() < 690 || move.getFromY() < 630 && move.getFromY() > 610) {
-                            score += 50;
-                            hit.setText("Great!");
-                            hit.setTextFill(Color.GREEN);
-                        } else {
-                            hit.setText("Fail!");
-                            hit.setTextFill(Color.RED);
-                        }
-                        //System.out.println(event.toString().substring(181));
-                        break;
-                    default:
-                        break;
-                }
-
-            }*/
-        }
-        );
-    }
-
     private void pitch_detect() {
         PitchAnalysis pitch = new PitchAnalysis();
         DecimalFormat df = new DecimalFormat("##.000");
@@ -436,12 +344,12 @@ public class GamepageController {
                                         if (pitch.getShowtime().get(index) * 1000 % 3 == 0) {
                                             newrightnode();
                                         }
-                                        node2.setVisible(true);
+                                        //node2.setVisible(true);
                                     });
                                     index++;
                                 } else {
                                     Platform.runLater(() -> {
-                                        node2.setVisible(false);
+                                        // node2.setVisible(false);
                                     });
                                     index++;
                                 }
@@ -521,17 +429,70 @@ public class GamepageController {
     }
 
     public void songlist(String result, int i) {
-        Button temp = new Button(result);
-        song.add(temp, 0, i);
+        HBox h = new HBox();
+        song.getChildren().add(h);
+
+        JFXButton temp = new JFXButton(result);
+        temp.setStyle(" -fx-background-color: \n"
+                + "        #090a0c,\n"
+                + "        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),\n"
+                + "        linear-gradient(#20262b, #191d22),\n"
+                + "        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));\n"
+                + "    -fx-background-radius: 5,4,3,5;\n"
+                + "    -fx-background-insets: 0,1,2,0;\n"
+                + "    -fx-text-fill: white;\n"
+                + "    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );\n"
+                + "    -fx-font-family: \"Arial\";\n"
+                + "    -fx-text-fill: linear-gradient(white, #d0d0d0);\n"
+                + "    -fx-font-size: 12px;\n"
+                + "    -fx-padding: 10 20 10 20;");
+        temp.setPrefWidth(1500);
+        temp.setAlignment(Pos.CENTER);
         temp.setOnAction(e -> {
             if (result != "") {
                 songselect = result.trim();
                 System.out.println(songselect + " ready to start!!!!");
                 pane.setExpanded(false);
                 beat_detect();
+
             }
         });
 
+        JFXButton delete = new JFXButton("X");
+        delete.setStyle("-fx-background-color: \n"
+                + "        #ecebe9,\n"
+                + "        rgba(0,0,0,0.05),\n"
+                + "        linear-gradient(#dcca8a, #c7a740),\n"
+                + "        linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%),\n"
+                + "        linear-gradient(#f6ebbe, #e6c34d);\n"
+                + "    -fx-background-insets: 0,9 9 8 9,9,10,11;\n"
+                + "    -fx-background-radius: 50;\n"
+                + "    -fx-padding: 10 20 10 20;\n"
+                + "    -fx-font-family: \"Helvetica\";\n"
+                + "    -fx-font-size: 10px;\n"
+                + "    -fx-text-fill: #311c09;\n"
+                + "    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);");
+
+        delete.setOnAction(e -> {
+            if (result != "") {
+                System.out.println(result.trim() + " want to Delete!!!!");
+                pane.setExpanded(false);
+                config con = new config();
+                String connectionStr = "jdbc:mysql://" + con.getUrlstr() + "/" + con.getDBName() + "?user=" + con.getUserstr() + "&password=" + con.getPw();
+                String deletesong = "delete from Songlist where Song_Title = '" + result.trim() + "';";
+
+                MySQLConnector MSC = new MySQLConnector();
+                MSC.connectDB(connectionStr);
+                //delete
+                MSC.doDelete(deletesong);
+                MSC.clearresult();
+                h.getChildren().clear();
+            }
+        });
+
+        h.getChildren().add(temp);
+        h.getChildren().add(delete);
+        pane.setExpanded(true);
     }
 
     private static class Playing implements Runnable {
