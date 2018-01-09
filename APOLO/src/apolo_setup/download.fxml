@@ -75,5 +75,10 @@
             </HBox>
          </graphic>
       </Button>
+      <Button fx:id="sql" mnemonicParsing="false" prefHeight="37.0" prefWidth="49.0" text="SQL">
+         <StackPane.margin>
+            <Insets bottom="810.0" left="1070.0" />
+         </StackPane.margin>
+      </Button>
    </children>
 </StackPane>

@@ -17,6 +17,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -56,13 +57,18 @@ public class GamepageController {
     int tempindex = 1;
     Boolean start = false;
     Image nodeview = new Image("/images/start.png");
+    BeatAnalysis beat = new BeatAnalysis();
+
+    private ArrayList<Double> midpoint = new ArrayList<Double>();
+    private ArrayList<Double> rightpoint = new ArrayList<Double>();
+    private ArrayList<Double> leftpoint = new ArrayList<Double>();
 
     public void initialize() {
         songDB();
     }
 
     private void beat_detect() {
-        BeatAnalysis beat = new BeatAnalysis();
+
         DecimalFormat df = new DecimalFormat("##.000");
 
         Thread t;
@@ -79,22 +85,104 @@ public class GamepageController {
                     timer.scheduleAtFixedRate(new TimerTask() {
                         int index = 1;
                         Double test = new Double("0.0");
+
+                        @Override
+                        public void run() {
+                            // TODO Auto-generated method stub
+                            test = test + 0.001;
+
+                            //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
+                            //System.out.println(beat.getShowtime());
+                            if (1 == compare(Double.parseDouble(df.format(test)), beat.getShowtime().get(index))) {
+                                if (beat.getShowornot().get(index) > Float.parseFloat(df.format(beat.getAverageEnergy()))) {
+                                    //     System.out.println(beat.getShowtime().get(index));
+                                    Platform.runLater(() -> {
+                                        if (beat.getShowtime().get(index) * 1000 % 3 == 1) {
+                                            newmidnode();
+                                            midpoint.add(beat.getShowtime().get(index));
+                                        }
+                                        if (beat.getShowtime().get(index) * 1000 % 3 == 2) {
+                                            newleftnode();
+                                            leftpoint.add(beat.getShowtime().get(index));
+                                        }
+                                        if (beat.getShowtime().get(index) * 1000 % 3 == 0) {
+                                            newrightnode();
+                                            rightpoint.add(beat.getShowtime().get(index));
+                                        }
+
+                                    });
+                                    index++;
+                                    tempindex++;
+                                } else {
+
+                                    index++;
+                                    tempindex++;
+                                }
+                            }
+                            if (index == beat.getShowtime().size()) {
+                                this.cancel();
+                            }
+                        }
+                    }, 0, 1);
+                    Thread.sleep(2000);
+                    key_detect();
+                    playmp3();
+                    stoptempo.setOnAction(e
+                            -> {
+                        timer.cancel();
+                    }
+                    );
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        }
+        );
+        t.start();
+    }
+
+    private void key_detect() {
+
+        DecimalFormat df = new DecimalFormat("##.000");
+
+        Thread t;
+        t = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(new TimerTask() {
+                        int mid_index = 1;
+                        int left_index = 1;
+                        int right_index = 1;
+                        Double test = new Double("0.0");
                         Double two = new Double("2.110");
 
                         @Override
                         public void run() {
                             // TODO Auto-generated method stub
                             test = test + 0.001;
-                            if (test > beat.getShowtime().get(index - tempindex) + 2.155) {
-                                tempindex--;
+                            System.out.println(test);
+                            if (0 == compare(Double.parseDouble(df.format(test)), rightpoint.get(right_index) + two)) {
+                                right_index++;
                             }
+
                             scene.setOnKeyPressed(e -> {
                                 if (e.getCode() == KeyCode.RIGHT) {
                                     //  System.out.println("RIGHT");
                                     right.setOpacity(1);
                                     rightkey = 0;
-                                    // System.out.println("right");
+                                    if (0 == compare(Double.parseDouble(df.format(test)), rightpoint.get(right_index) + two)) {
+                                        score += 100;
+                                        scoreshow.setText(String.valueOf(score));
+                                        hit.setText("Perfect!");
+                                        hit.setTextFill(Color.BLUE);
+                                    }
 
+
+                                    /*
                                     System.out.println(tempindex);
                                     System.out.println(beat.getShowtime().get(index - tempindex) + 2.149);
                                     System.out.println(test);
@@ -118,6 +206,8 @@ public class GamepageController {
                                         hit.setText("Fail!");
                                         hit.setTextFill(Color.RED);
 
+                                    }*/ {
+
                                     }
                                 }
                                 if (e.getCode() == KeyCode.LEFT) {
@@ -126,7 +216,7 @@ public class GamepageController {
                                     leftkey = 0;
                                     // System.out.println("left");
                                     // System.out.println(beat.getShowtime().get(index));
-                                    System.out.println(tempindex);
+                                    /* System.out.println(tempindex);
                                     System.out.println(beat.getShowtime().get(index - tempindex) + 2.149);
                                     System.out.println(test);
                                     if (test < beat.getShowtime().get(index - tempindex) + 2.149 + 0.2 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 0.4) {
@@ -150,14 +240,14 @@ public class GamepageController {
                                         hit.setTextFill(Color.RED);
                                     }
                                     // System.out.println(test);
-
+                                     */
                                 }
                                 if (e.getCode() == KeyCode.UP) {
                                     //System.out.println("RIGHT");
                                     up.setOpacity(1);
                                     upkey = 0;
                                     //  System.out.println(beat.getShowtime().get(index ));
-                                    System.out.println(tempindex);
+                                    /*System.out.println(tempindex);
                                     System.out.println(beat.getShowtime().get(index - tempindex) + 2.149);
                                     System.out.println(test);
                                     if (test < beat.getShowtime().get(index - tempindex) + 2.149 + 0.2 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 0.4) {
@@ -181,42 +271,11 @@ public class GamepageController {
                                         hit.setTextFill(Color.RED);
                                     }
                                     // System.out.println("mid");
-                                    // System.out.println(test);
+                                    // System.out.println(test);*/
                                 }
 
                             });
 
-                            //System.out.println(Double.parseDouble(df.format(test)) + "~~~~~");
-                            //System.out.println(beat.getShowtime());
-                            if (1 == compare(Double.parseDouble(df.format(test)), beat.getShowtime().get(index))) {
-                                if (beat.getShowornot().get(index) > Float.parseFloat(df.format(beat.getAverageEnergy()))) {
-                                    //     System.out.println(beat.getShowtime().get(index));
-                                    Platform.runLater(() -> {
-                                        if (beat.getShowtime().get(index) * 1000 % 3 == 1) {
-                                            newmidnode();
-
-                                        }
-                                        if (beat.getShowtime().get(index) * 1000 % 3 == 2) {
-                                            newleftnode();
-                                        }
-                                        if (beat.getShowtime().get(index) * 1000 % 3 == 0) {
-                                            newrightnode();
-                                        }
-                                        //node2.setVisible(true);
-                                    });
-                                    index++;
-                                    tempindex++;
-                                } else {
-                                    Platform.runLater(() -> {
-                                        //node2.setVisible(false);
-                                    });
-                                    index++;
-                                    tempindex++;
-                                }
-                            }
-                            if (index == beat.getShowtime().size()) {
-                                this.cancel();
-                            }
                             leftkey++;
                             upkey++;
                             rightkey++;
@@ -230,17 +289,8 @@ public class GamepageController {
                                 up.setOpacity(0.5);
                             }
                         }
-                    },
-                            0, 1);
-                    Thread.sleep(
-                            2000);
-                    playmp3();
+                    }, 0, 1);
 
-                    stoptempo.setOnAction(e
-                            -> {
-                        timer.cancel();
-                    }
-                    );
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -322,7 +372,6 @@ public class GamepageController {
                     timer.scheduleAtFixedRate(new TimerTask() {
                         int index = 1;
                         Double test = new Double("0.0");
-                        Double two = new Double("2.110");
 
                         @Override
                         public void run() {

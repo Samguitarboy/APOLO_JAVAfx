@@ -27,7 +27,7 @@ public class DownloadController implements Initializable {
     private String videoid;
 
     @FXML
-    private Button download;
+    private Button download, sql;
 
     @FXML
     private TextField songtitle, a;
@@ -107,10 +107,11 @@ public class DownloadController implements Initializable {
             videoid = temp[1];
             a.setText("https://www.youtube.com/watch?v=" + temp[1]);
             engine.load("http://www.flvto.biz/");
-
-            //engine.load("https://www.youtubeto.com/watch?v=" + temp[1]);
         });
 
+        sql.setOnAction(e -> {
+            songtoDB(songtitle.getText());
+        });
     }
 
     EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {

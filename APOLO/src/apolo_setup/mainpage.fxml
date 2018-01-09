@@ -159,6 +159,14 @@
             </Lighting>
          </effect>
       </Label>
-      <Pane opacity="0.78" prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: #e6e6ff;" />
+      <Pane fx:id="sayhello" opacity="0.78" prefHeight="67.0" prefWidth="1000.0" style="-fx-background-color: #e6e6ff;">
+         <children>
+            <Label fx:id="hello" layoutX="900.0" layoutY="12.0" textFill="#d36262">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

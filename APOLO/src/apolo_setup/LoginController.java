@@ -18,8 +18,7 @@ import javafx.stage.Stage;
 public class LoginController implements Initializable {
 
     public Boolean loginornot = false;
-    public String UserName = "";
-
+    public static String username = "";
     @FXML
     private Label sameerror;
 
@@ -40,7 +39,7 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    private void duplicateorstart(MouseEvent event) throws Exception {
+    public void duplicateorstart(MouseEvent event) throws Exception {
         config con = new config();
         String connectionStr = "jdbc:mysql://" + con.getUrlstr() + "/" + con.getDBName() + "?user=" + con.getUserstr() + "&password=" + con.getPw();
         String duplicate = "select Username from userinfo where Username = '" + userid_input.getText() + "';";
@@ -54,12 +53,14 @@ public class LoginController implements Initializable {
             String insertname = "insert into userinfo values(N'" + userid_input.getText() + "',null,CURRENT_DATE)";
             duplicateornot.doInsert(insertname);
             loginornot = true;
-            UserName = userid_input.getText();
-
+            username = userid_input.getText();
+            System.out.println(username);
             Parent main_page_parent = FXMLLoader.load(getClass().getResource("mainpage.fxml"));
             Scene main_page_scene = new Scene(main_page_parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
             app_stage.setScene(main_page_scene);
+
             app_stage.show();
         } else {
             sameerror.setVisible(true);
@@ -83,6 +84,10 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         userid_input.setOnMouseMoved(mouseHandler);
+        signin.setOnAction(e -> {
+            System.out.println(userid_input.getText());
+        });
+
     }
 
 }
