@@ -164,7 +164,7 @@
             </HBox>
          </graphic>
       </Button>
-      <Label fx:id="name" disable="true" textFill="#f9ff7d" visible="false">
+      <Label fx:id="name" textFill="#f9ff7d" visible="false">
          <font>
             <Font size="86.0" />
          </font>
@@ -172,7 +172,7 @@
             <Insets bottom="250.0" right="300.0" />
          </StackPane.margin>
       </Label>
-      <Label fx:id="scorenum" disable="true" textFill="#dff278" visible="false">
+      <Label fx:id="scorenum" textFill="#dff278" visible="false">
          <font>
             <Font size="86.0" />
          </font>

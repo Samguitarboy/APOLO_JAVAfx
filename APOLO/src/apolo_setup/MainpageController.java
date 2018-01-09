@@ -57,6 +57,16 @@ public class MainpageController implements Initializable {
 
     }
 
+    @FXML
+    private void gotoCreditPage(MouseEvent event) throws Exception {
+        Parent main_page_parent = FXMLLoader.load(getClass().getResource("Credit.fxml"));
+        Scene main_page_scene = new Scene(main_page_parent);
+        Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        app_stage.setScene(main_page_scene);
+        app_stage.show();
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
