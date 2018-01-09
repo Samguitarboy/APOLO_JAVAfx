@@ -58,7 +58,7 @@ public class GamepageController {
     int tempindex = 1;
     Boolean start = false;
     Image nodeview = new Image("/images/start.png");
-    BeatAnalysis beat = new BeatAnalysis();
+
     LoginController login = new LoginController();
 
     public void initialize() {
@@ -66,7 +66,7 @@ public class GamepageController {
     }
 
     private void beat_detect() {
-
+        BeatAnalysis beat = new BeatAnalysis();
         DecimalFormat df = new DecimalFormat("##.000");
 
         Thread t;
@@ -88,24 +88,16 @@ public class GamepageController {
                         public void run() {
                             // TODO Auto-generated method stub
                             test = test + 0.001;
+                            if (test > beat.getShowtime().get(index - tempindex) + 2.155) {
+                                tempindex--;
+                            }
                             scene.setOnKeyPressed(e -> {
                                 if (e.getCode() == KeyCode.RIGHT) {
                                     //  System.out.println("RIGHT");
                                     right.setOpacity(1);
                                     rightkey = 0;
-                                    score += 1;
-                                    scoreshow.setText(String.valueOf(score));
-                                    hit.setText("Perfect!");
-                                    hit.setTextFill(Color.BLUE);
-                                    /*if (0 == compare(Double.parseDouble(df.format(test)), rightpoint.get(right_index) + two)) {
-                                        score += 100;
-                                        scoreshow.setText(String.valueOf(score));
-                                        hit.setText("Perfect!");
-                                        hit.setTextFill(Color.BLUE);
-                                    }*/
+                                    // System.out.println("right");
 
-
- /*
                                     System.out.println(tempindex);
                                     System.out.println(beat.getShowtime().get(index - tempindex) + 2.149);
                                     System.out.println(test);
@@ -129,22 +121,15 @@ public class GamepageController {
                                         hit.setText("Fail!");
                                         hit.setTextFill(Color.RED);
 
-                                    }*/ {
-
                                     }
                                 }
                                 if (e.getCode() == KeyCode.LEFT) {
                                     // System.out.println("RIGHT");
                                     left.setOpacity(1);
                                     leftkey = 0;
-                                    score += 1;
-                                    scoreshow.setText(String.valueOf(score));
-                                    hit.setText("Great!");
-                                    hit.setTextFill(Color.GREEN);
-
                                     // System.out.println("left");
                                     // System.out.println(beat.getShowtime().get(index));
-                                    /* System.out.println(tempindex);
+                                    System.out.println(tempindex);
                                     System.out.println(beat.getShowtime().get(index - tempindex) + 2.149);
                                     System.out.println(test);
                                     if (test < beat.getShowtime().get(index - tempindex) + 2.149 + 0.2 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 0.4) {
@@ -168,16 +153,14 @@ public class GamepageController {
                                         hit.setTextFill(Color.RED);
                                     }
                                     // System.out.println(test);
-                                     */
+
                                 }
                                 if (e.getCode() == KeyCode.UP) {
                                     //System.out.println("RIGHT");
                                     up.setOpacity(1);
                                     upkey = 0;
-                                    hit.setText("Fail!");
-                                    hit.setTextFill(Color.RED);
                                     //  System.out.println(beat.getShowtime().get(index ));
-                                    /*System.out.println(tempindex);
+                                    System.out.println(tempindex);
                                     System.out.println(beat.getShowtime().get(index - tempindex) + 2.149);
                                     System.out.println(test);
                                     if (test < beat.getShowtime().get(index - tempindex) + 2.149 + 0.2 && test > beat.getShowtime().get(index - tempindex) + 2.149 - 0.4) {
@@ -201,7 +184,7 @@ public class GamepageController {
                                         hit.setTextFill(Color.RED);
                                     }
                                     // System.out.println("mid");
-                                    // System.out.println(test);*/
+                                    // System.out.println(test);
                                 }
 
                             });
@@ -250,7 +233,7 @@ public class GamepageController {
                             if (index == beat.getShowtime().size()) {
                                 this.cancel();
                                 if (login.username != "") {
-                                    showrecord();
+
                                     recordDB();
                                 }
                             }
@@ -438,12 +421,7 @@ public class GamepageController {
         cover.setDisable(false);
         cover.setVisible(true);
         name.setText(login.username);
-        scorenum.setText(Integer.toString(score));
-        scorenum.setDisable(false);
-        scorenum.setVisible(true);
-        name.setDisable(false);
-        name.setVisible(true);
-
+        scorenum.setText("" + score);
     }
 
     private void songDB() {
@@ -470,7 +448,7 @@ public class GamepageController {
     private void recordDB() {
         config con = new config();
         String connectionStr = "jdbc:mysql://" + con.getUrlstr() + "/" + con.getDBName() + "?user=" + con.getUserstr() + "&password=" + con.getPw();
-        String insertrecord = "insert into playrecord values(N'" + login.username + "'," + score + ",CURRENT_DATE,null);";
+        String insertrecord = "insert into playrecord values(N'" + login.username + "'," + score + ",CURRENT_DATE,null,N'"+songselect+"');";
         MySQLConnector MSC_insert = new MySQLConnector();
         MSC_insert.connectDB(connectionStr);
 
