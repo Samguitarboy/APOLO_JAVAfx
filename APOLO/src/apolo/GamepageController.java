@@ -2,7 +2,6 @@ package apolo;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
-
 import static java.lang.Double.compare;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -26,6 +26,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javax.swing.ImageIcon;
 
 public class GamepageController {
 
@@ -50,6 +51,9 @@ public class GamepageController {
 
     int score = 0;
     int leftkey = 0, upkey = 0, rightkey = 0;
+    private ArrayList<Double> lefttimes = new ArrayList<Double>();
+    private ArrayList<Double> righttimes = new ArrayList<Double>();
+    private ArrayList<Double> uptimes = new ArrayList<Double>();
     int tempindex = 1;
     private String songselect = "";
     LoginController login = new LoginController();
@@ -110,12 +114,15 @@ public class GamepageController {
                                     Platform.runLater(() -> {
                                         if (beat.getShowtime().get(index) * 1000 % 3 == 1) {
                                             addpoint.newmidnode();
+                                            uptimes.add(beat.getShowtime().get(index) + 2.149);
                                         }
                                         if (beat.getShowtime().get(index) * 1000 % 3 == 2) {
                                             addpoint.newleftnode();
+                                            lefttimes.add(beat.getShowtime().get(index) + 2.149);
                                         }
                                         if (beat.getShowtime().get(index) * 1000 % 3 == 0) {
                                             addpoint.newrightnode();
+                                            righttimes.add(beat.getShowtime().get(index) + 2.149);
                                         }
 
                                     });
@@ -236,6 +243,7 @@ public class GamepageController {
                         }
                     }, 0, 1);
                     Platform.runLater(() -> {
+                        ImageIcon loading = new ImageIcon("images/countdown.gif");
                         countdown.setImage(new Image("images/countdown.gif"));
                         countdown.setVisible(true);
                     });

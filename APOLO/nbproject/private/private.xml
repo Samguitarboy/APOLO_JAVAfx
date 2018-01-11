@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/阿賢賢/Desktop/APOLO_JAVAfx/APOLO/src/apolo_setup/GamepageController.java</file>
-            <file>file:/C:/Users/阿賢賢/Desktop/APOLO_JAVAfx/APOLO/src/apolo_setup/DownloadController.java</file>
-            <file>file:/C:/Users/阿賢賢/Desktop/APOLO_JAVAfx/APOLO/src/apolo_setup/CreditController.java</file>
-            <file>file:/C:/Users/阿賢賢/Desktop/APOLO_JAVAfx/APOLO/src/apolo_setup/BeatAnalysis.java</file>
-            <file>file:/C:/Users/阿賢賢/Desktop/APOLO_JAVAfx/APOLO/src/apolo_setup/MainpageController.java</file>
+            <file>file:/C:/Users/阿賢賢/Desktop/APOLO_JAVAfx/APOLO/src/apolo/DownloadController.java</file>
+            <file>file:/C:/Users/阿賢賢/Desktop/APOLO_JAVAfx/APOLO/src/apolo/LoginController.java</file>
+            <file>file:/C:/Users/阿賢賢/Desktop/APOLO_JAVAfx/APOLO/src/apolo/BeatAnalysis.java</file>
+            <file>file:/C:/Users/阿賢賢/Desktop/APOLO_JAVAfx/APOLO/src/apolo/CreditController.java</file>
+            <file>file:/C:/Users/阿賢賢/Desktop/APOLO_JAVAfx/APOLO/src/apolo/GamepageController.java</file>
+            <file>file:/C:/Users/阿賢賢/Desktop/APOLO_JAVAfx/APOLO/src/apolo/MainpageController.java</file>
         </group>
     </open-files>
 </project-private>

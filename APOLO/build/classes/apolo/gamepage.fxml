@@ -154,7 +154,7 @@
             <Insets left="1040.0" top="600.0" />
          </StackPane.margin>
       </JFXButton>
-      <ImageView fx:id="countdown" cache="true" fitHeight="150.0" fitWidth="200.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="countdown" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <StackPane.margin>
             <Insets bottom="500.0" />
          </StackPane.margin>
