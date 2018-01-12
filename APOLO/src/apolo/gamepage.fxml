@@ -188,6 +188,14 @@
             <Insets bottom="250.0" left="350.0" />
          </StackPane.margin>
       </Label>
+      <Label fx:id="scorenumnologinin" textFill="#dff278">
+         <font>
+            <Font size="86.0" />
+         </font>
+         <StackPane.margin>
+            <Insets bottom="250.0" />
+         </StackPane.margin>
+      </Label>
       <Button fx:id="backtomain1" mnemonicParsing="false" onMouseClicked="#gotoMain" prefHeight="40.0" prefWidth="97.0" visible="false">
          <graphic>
             <HBox alignment="CENTER_RIGHT" prefHeight="23.0" prefWidth="150.0" spacing="10.0">

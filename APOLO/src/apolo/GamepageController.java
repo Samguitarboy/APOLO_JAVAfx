@@ -20,14 +20,12 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javax.swing.ImageIcon;
 
 public class GamepageController {
 
@@ -36,7 +34,7 @@ public class GamepageController {
     @FXML
     private ScrollPane scroll;
     @FXML
-    private Label scoreshow, hit, scorenum, name;
+    private Label scoreshow, hit, scorenum, name, scorenumnologinin;
     @FXML
     private JFXButton stop, stoptempo;
     @FXML
@@ -161,12 +159,12 @@ public class GamepageController {
                                 if (e.getCode() == KeyCode.RIGHT) {
                                     right.setOpacity(1);
                                     rightkey = 0;
-                                    if ((righttimes.get(rightindex) - Double.parseDouble(df.format(test))) < 0.4) {
+                                    if (Math.abs(righttimes.get(rightindex) - Double.parseDouble(df.format(test))) < 0.4) {
                                         score += 100;
                                         scoreshow.setText(String.valueOf(score));
                                         hit.setText("Perfect!");
                                         hit.setTextFill(Color.BLUE);
-                                    } else if ((righttimes.get(rightindex) - Double.parseDouble(df.format(test))) < 0.7) {
+                                    } else if (Math.abs(righttimes.get(rightindex) - Double.parseDouble(df.format(test))) < 0.7) {
                                         score += 50;
                                         scoreshow.setText(String.valueOf(score));
                                         hit.setText("Great!");
@@ -180,12 +178,12 @@ public class GamepageController {
 
                                     left.setOpacity(1);
                                     leftkey = 0;
-                                    if ((lefttimes.get(leftindex) - Double.parseDouble(df.format(test))) < 0.4) {
+                                    if (Math.abs(lefttimes.get(leftindex) - Double.parseDouble(df.format(test))) < 0.4) {
                                         score += 100;
                                         scoreshow.setText(String.valueOf(score));
                                         hit.setText("Perfect!");
                                         hit.setTextFill(Color.BLUE);
-                                    } else if ((lefttimes.get(leftindex) - Double.parseDouble(df.format(test))) < 0.7) {
+                                    } else if (Math.abs(lefttimes.get(leftindex) - Double.parseDouble(df.format(test))) < 0.7) {
                                         score += 50;
                                         scoreshow.setText(String.valueOf(score));
                                         hit.setText("Great!");
@@ -200,12 +198,12 @@ public class GamepageController {
 
                                     up.setOpacity(1);
                                     upkey = 0;
-                                    if ((uptimes.get(upindex) - Double.parseDouble(df.format(test))) < 0.4) {
+                                    if (Math.abs(uptimes.get(upindex) - Double.parseDouble(df.format(test))) < 0.4) {
                                         score += 100;
                                         scoreshow.setText(String.valueOf(score));
                                         hit.setText("Perfect!");
                                         hit.setTextFill(Color.BLUE);
-                                    } else if ((uptimes.get(upindex) - Double.parseDouble(df.format(test))) < 0.7) {
+                                    } else if (Math.abs(uptimes.get(upindex) - Double.parseDouble(df.format(test))) < 0.7) {
                                         score += 50;
                                         scoreshow.setText(String.valueOf(score));
                                         hit.setText("Great!");
@@ -228,19 +226,19 @@ public class GamepageController {
                                     cover.setVisible(true);
                                     backtomain1.setVisible(true);
                                     Platform.runLater(() -> {
-                                        scorenum.setText("" + score);
+                                        scorenumnologinin.setText("" + score);
                                     });
                                 }
                             }
                         }
                     }, 0, 1);
-                    Platform.runLater(
+                    /*Platform.runLater(
                             () -> {
                                 ImageIcon loading = new ImageIcon("images/countdown.gif");
                                 countdown.setImage(new Image("images/countdown.gif"));
                                 countdown.setVisible(true);
                             }
-                    );
+                    );*/
                     Thread.sleep(2000);
                     //countdown.setVisible(false);
                     playmp3();

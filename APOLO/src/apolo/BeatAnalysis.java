@@ -44,6 +44,6 @@ public class BeatAnalysis {
     }
 
     public float getAverageEnergy() {
-        return (float)AverageEnergy/(showtime.size()*5/2);
+        return (float)AverageEnergy/(showtime.size()*3/2);
     }
 }
